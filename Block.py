@@ -1,7 +1,7 @@
 import pygame
 import json
 from Vector import Vector
-from Collisionbox import Collisionbox
+from Collisionbox import CollisionBox
 
 class Block:
     def __init__(self, x, y, width, height, block):
@@ -11,7 +11,6 @@ class Block:
 
         self.block = block
 
-        self.collisionbox = Collisionbox(self.pos, self.dim)
     
     def draw(self, window, block_data, block_tileset, pixel_size):
         self.tile_x = block_data[self.block][0]["x"]

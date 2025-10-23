@@ -11,9 +11,11 @@ class Mario:
 
         self.animation_state = "idle"
         self.direction = True
-    def jump(self):
-        self.vel.setY(-5)
-        self.animation_state = "jump"
+    def jump(self, on_ground=True):
+        if on_ground:
+            self.vel.setY(-6)
+            self.animation_state = "jump"
+
 
     def left(self):
         self.vel.setX(-5)
@@ -26,6 +28,7 @@ class Mario:
         self.direction = True
 
     def crouch(self):
+        self.vel.setY(5)
         self.animation_state = "crouch"
     
     def stand(self):
@@ -33,33 +36,77 @@ class Mario:
         self.vel.setX(0)
     
     def fall(self):
-        self.vel.setY(self.vel.getY() + 0.1)  # Gravity effect
-        self.animation_state = "fall"
+        self.vel.setY(self.vel.getY() + 0.01)# Gravity effect
+        self.animation_state = "idle"
 
     def update(self, keys, blocks):
-        for block in blocks:
-            if block.collisionbox.checkPointCollision(self.pos, self.dim):
-                print("collision")
-                self.stand()
-            else:
-                self.fall()
+        # --- Apply horizontal movement ---
         if keys[pygame.K_LEFT]:
             self.left()
         elif keys[pygame.K_RIGHT]:
             self.right()
         else:
             self.stand()
-        
-        if keys[pygame.K_DOWN]:
-            self.crouch()
-        
-        if keys[pygame.K_UP]:
-            self.jump()
-        
 
+        # --- Jump / crouch ---
+        if keys[pygame.K_UP] and on_ground:
+            self.jump(on_ground=True)
+
+        elif keys[pygame.K_DOWN]:
+            self.crouch()
+
+        # --- Apply gravity ---
+        self.vel.setY(self.vel.getY() + 0.3)  # gravity acceleration
+        if self.vel.getY() > 5:               # limit fall speed
+            self.vel.setY(5)
+
+        # --- Predict next position ---
+        next_pos = Vector(self.pos.getX(), self.pos.getY() + self.vel.getY())
+
+        # --- Collision detection (simple ground check) ---
+        on_ground = False
+        for block in blocks:
+            if block.collisionbox.rect.collidepoint(self.pos.getX(), self.pos.getY()):
+                print(True)
+                on_ground = True
+                self.vel.setY(0)
+                self.animation_state = "idle"
+                break
+            
+            
+
+        if not on_ground:
+            self.animation_state = "idle"
+
+        # --- Apply final position ---
         self.pos.add(self.vel.getX(), self.vel.getY())
         self.rect.topleft = (self.pos.getX(), self.pos.getY())
 
+    def test(self, blocks, keys):
+        if keys[pygame.K_LEFT]:
+            self.pos.add(-5, 0)
+        elif keys[pygame.K_RIGHT]:
+            self.pos.add(5, 0)
+        elif keys[pygame.K_DOWN]:
+            self.pos.add(0, 5)
+        if keys[pygame.K_UP]:
+            self.pos.add(0, -5)
+
+        elif keys[pygame.K_DOWN]:
+            self.crouch()
+        
+        for block in blocks:
+            #print("mario pos: ", self.pos.get())
+            #print("mario dim: ", self.dim.get())
+            #print("block pos: ", block.pos.get())
+            #print("block dim: ", block.dim.get())
+            if block.rect.colliderect(self.rect):
+                print(True)
+                self.vel.setY(0)
+                self.animation_state = "idle"
+                break
+            else:
+                print(False)
 
     def draw(self, time, window, mario_data, mario_tileset, pixel_size):
         
