@@ -68,6 +68,7 @@ def playLevel(window, sky, dt, mario, blocks, mario_data, mario_tileset, blocks_
 def editLevel(window):
     #clear window and fill in blue
     window.fill(sky)
+    
 
 
 

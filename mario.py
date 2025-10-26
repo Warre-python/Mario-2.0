@@ -5,6 +5,8 @@ class Mario:
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
+        self.spawnX = self.x
+        self.spawnY = self.y
         self.width = width
         self.height = height
 
@@ -70,6 +72,13 @@ class Mario:
                 elif self.velY < 0:  # hitting ceiling
                     self.rect.top = block.rect.bottom
                     self.velY = 0
+        
+        if self.y > window.get_height():
+            self.x = self.spawnX
+            self.y = self.spawnY
+            self.rect.x = self.x
+            self.rect.y = self.y
+            
 
         # Update position variables
         self.x, self.y = self.rect.topleft
