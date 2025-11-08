@@ -1,7 +1,7 @@
 import pygame
 from animation import Animation
 
-class Mario:
+class Mario():
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y

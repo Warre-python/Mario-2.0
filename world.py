@@ -1,4 +1,6 @@
 import json
+
+import pygame
 from block import Block
 
 class World:

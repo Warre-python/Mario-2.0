@@ -1,6 +1,6 @@
 import pygame
 
-class Block:
+class Block():
     def __init__(self, x, y, width, height, tile):
         self.x = x
         self.y = y

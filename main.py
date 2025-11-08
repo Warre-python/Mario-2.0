@@ -1,5 +1,6 @@
 import pygame
 import json
+from camera import Camera
 from mario import Mario
 from world import World
 from textBox import TextBox
@@ -14,7 +15,7 @@ scene = "play_level"
 
 #create window
 pygame.init()
-window = pygame.display.set_mode((1800, 1000), pygame.RESIZABLE)
+window = pygame.display.set_mode((900, 500), pygame.RESIZABLE)
 pygame.display.set_caption("Mario 2.0")
 font  = pygame.font.SysFont('Constantia', 15)
 clock = pygame.time.Clock()
@@ -46,6 +47,7 @@ testbox = TextBox("Fps: ", (255, 255, 255), 'Cinstantia', 50, 20, 20)
 edit_button = Button(20, 100, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Edit Level", 'Cinstantia')
 play_button = Button(20, 180, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Play Level", 'Cinstantia')
 
+camera = Camera()
 
 
 
@@ -58,6 +60,8 @@ def playLevel(window, sky, dt, mario, blocks, mario_data, mario_tileset, blocks_
     keys = pygame.key.get_pressed()
     mario.update(keys, blocks, dt, window)
     mario.draw(dt, window, mario_data, mario_tileset, pixel_size)
+
+    
 
     #draw blocks
     for block in blocks:
