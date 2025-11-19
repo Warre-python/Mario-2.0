@@ -17,7 +17,7 @@ scene = "play_level"
 pygame.init()
 window = pygame.display.set_mode((900, 500), pygame.RESIZABLE)
 pygame.display.set_caption("Mario 2.0")
-font  = pygame.font.SysFont('Constantia', 15)
+
 clock = pygame.time.Clock()
 sky = (135, 205, 255)
 
@@ -41,12 +41,11 @@ world.loadWorldData()
 blocks = world.loadWorld()
 
 #textbox for fps
-testbox = TextBox("Fps: ", (255, 255, 255), 'Cinstantia', 50, 20, 20)
+testbox = TextBox("Fps: ", (255, 255, 255), 'default', 50, 20, 20)
 
 
-edit_button = Button(20, 100, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Edit Level", 'Cinstantia')
-play_button = Button(20, 180, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Play Level", 'Cinstantia')
-
+edit_button = Button(20, 100, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Edit Level", 'default')
+play_button = Button(20, 180, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Play Level", 'default')
 camera = Camera()
 
 

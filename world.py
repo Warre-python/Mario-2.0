@@ -14,7 +14,7 @@ class World:
             self.world_data = json.load(l)
     
     def loadWorld(self):
-        blocks = []
+        blocks = pygame.sprite.Group()
 
         # Loop through each block in the level data
         for block_id, block_info in self.world_data.items():
@@ -27,5 +27,5 @@ class World:
             
 
             # Create a Block instance (assuming Block class exists)
-            blocks.append(Block(x, y, width* self.pixel_size, height * self.pixel_size, tile))
+            blocks.add(Block(x, y, width* self.pixel_size, height * self.pixel_size, tile))
         return blocks

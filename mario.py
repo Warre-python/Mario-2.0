@@ -1,8 +1,9 @@
 import pygame
 from animation import Animation
 
-class Mario():
+class Mario(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height):
+        super().__init__()
         self.x = x
         self.y = y
         self.spawnX = self.x
@@ -53,21 +54,25 @@ class Mario():
 
         # Horizontal movement
         self.rect.x += self.velX * dt
-        for block in blocks:
-            if self.rect.colliderect(block.rect):
-                if self.velX > 0:  # moving right
-                    self.rect.right = block.rect.left
-                elif self.velX < 0:  # moving left
-                    self.rect.left = block.rect.right
+        collision = pygame.sprite.spritecollide(self, blocks, False)
+        if collision:
+            for block in collision:
+                if self.rect.colliderect(block.rect):
+                    if self.velX > 0:  # moving right
+                        self.rect.right = block.rect.left
+                    elif self.velX < 0:  # moving left
+                        self.rect.left = block.rect.right
 
         # Vertical movement
         self.rect.y += self.velY * dt
         self.on_ground = False
-        for block in blocks:
-            if self.rect.colliderect(block.rect):
-                if self.velY > 0:  # falling
-                    self.rect.bottom = block.rect.top
-                    self.velY = 0
+        collision = pygame.sprite.spritecollide(self, blocks, False)
+        if collision:
+            for block in collision:
+                if self.rect.colliderect(block.rect):
+                    if self.velY > 0:  # falling
+                        self.rect.bottom = block.rect.top
+                        self.velY = 0
                     self.on_ground = True
                 elif self.velY < 0:  # hitting ceiling
                     self.rect.top = block.rect.bottom

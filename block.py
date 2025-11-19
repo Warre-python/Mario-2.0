@@ -1,7 +1,8 @@
 import pygame
 
-class Block():
+class Block(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, tile):
+        super().__init__()
         self.x = x
         self.y = y
         self.width = width
