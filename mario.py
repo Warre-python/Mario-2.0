@@ -20,6 +20,7 @@ class Mario(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.color = (255, 0, 255)
         self.on_ground = False
+        self.jump = False
 
         self.animation = Animation(["run1", "run2", "run3", "run4"], 0.1)
         self.animation_state = "idle"
@@ -42,10 +43,15 @@ class Mario(pygame.sprite.Sprite):
             self.velY = -self.jump_power
             self.on_ground = False
             self.animation_state = "jump"
+            self.jump = True
         
         elif keys[pygame.K_DOWN]:
             self.animation_state = "crouch"
     
+        if self.jump:
+            if self.on_ground:
+                self.jump = False
+            self.animation_state = "jump"
 
     def moveX(self, dt, blocks, window):
         
