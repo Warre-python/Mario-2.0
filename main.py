@@ -15,7 +15,7 @@ scene = "play_level"
 
 #create window
 pygame.init()
-window = pygame.display.set_mode((900, 500), pygame.RESIZABLE)
+window = pygame.display.set_mode((1500, 800), pygame.RESIZABLE)
 pygame.display.set_caption("Mario 2.0")
 
 clock = pygame.time.Clock()

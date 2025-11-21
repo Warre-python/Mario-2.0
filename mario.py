@@ -46,19 +46,46 @@ class Mario(pygame.sprite.Sprite):
         elif keys[pygame.K_DOWN]:
             self.animation_state = "crouch"
     
-    def moveX(self, dt, blocks):
+
+    def moveX(self, dt, blocks, window):
         print("hallo")
-        #self.rect.x += self.velX * dt
-        for block in blocks:
-            block.x += -self.velX * dt
-            block.rect.x = block.x
+        if self.rect.x < window.get_width() * 0.2 or self.rect.x > window.get_width() * 0.8:
+    
+            for block in blocks:
+                block.x += -self.velX * dt
+                block.rect.x = block.x
+        else:
+            self.rect.x += self.velX * dt
+        # camera deadzone thresholds
+        min_x = window.get_width() * 0.4
+        max_x = window.get_width() * 0.6
+
+        # If Mario is moving and outside the deadzone, move blocks opposite to Mario
+        if self.velX != 0:
+            if self.rect.x < min_x and self.velX < 0:
+                # Mario tries to move left past min_x -> keep Mario at min_x and shift world right
+                self.rect.x = int(min_x)
+                for block in blocks:
+                    block.x += -self.velX * dt
+                    block.rect.x = round(block.x)
+                return
+            elif self.rect.x > max_x and self.velX > 0:
+                # Mario tries to move right past max_x -> keep Mario at max_x and shift world left
+                self.rect.x = int(max_x)
+                for block in blocks:
+                    block.x += -self.velX * dt
+                    block.rect.x = round(block.x)
+                return
+
+        # Default: move Mario normally (inside deadzone or not moving)
+        else:
+            self.rect.x += self.velX * dt
+
 
     def moveY(self, dt, blocks):
-        print("hallo2")
+        
         self.rect.y += self.velY * dt
-        #for block in blocks:
-        #    block.y += -self.velY * dt
-        #    block.rect.y = block.y
+        
 
     def update(self, keys, blocks, dt, window):
         self.handle_input(keys)
@@ -67,7 +94,7 @@ class Mario(pygame.sprite.Sprite):
         self.velY += self.gravity * dt
 
         # Horizontal movement
-        self.moveX(dt, blocks)
+        self.moveX(dt, blocks, window)
         
         
         self.x, self.y = self.rect.topleft
