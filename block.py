@@ -11,6 +11,11 @@ class Block(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
         self.tile = tile
+    
+    def move(self, dx, dy):
+        self.rect.x += dx
+        self.rect.y += dy
+        self.x, self.y = self.rect.topleft
 
     def draw(self, window, block_data, block_tileset, pixel_size):
         #pygame.draw.rect(window, (255, 0, 0), self.rect)

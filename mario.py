@@ -45,6 +45,20 @@ class Mario(pygame.sprite.Sprite):
         
         elif keys[pygame.K_DOWN]:
             self.animation_state = "crouch"
+    
+    def moveX(self, dt, blocks):
+        print("hallo")
+        #self.rect.x += self.velX * dt
+        for block in blocks:
+            block.x += -self.velX * dt
+            block.rect.x = block.x
+
+    def moveY(self, dt, blocks):
+        print("hallo2")
+        self.rect.y += self.velY * dt
+        #for block in blocks:
+        #    block.y += -self.velY * dt
+        #    block.rect.y = block.y
 
     def update(self, keys, blocks, dt, window):
         self.handle_input(keys)
@@ -53,7 +67,11 @@ class Mario(pygame.sprite.Sprite):
         self.velY += self.gravity * dt
 
         # Horizontal movement
-        self.rect.x += self.velX * dt
+        self.moveX(dt, blocks)
+        
+        
+        self.x, self.y = self.rect.topleft
+
         collision = pygame.sprite.spritecollide(self, blocks, False)
         if collision:
             for block in collision:
@@ -64,7 +82,9 @@ class Mario(pygame.sprite.Sprite):
                         self.rect.left = block.rect.right
 
         # Vertical movement
-        self.rect.y += self.velY * dt
+        self.moveY(dt, blocks)
+        
+        self.x, self.y = self.rect.topleft
         self.on_ground = False
         collision = pygame.sprite.spritecollide(self, blocks, False)
         if collision:
@@ -79,6 +99,7 @@ class Mario(pygame.sprite.Sprite):
                     self.velY = 0
         
         if self.y > window.get_height():
+            print("Respawn")
             self.x = self.spawnX
             self.y = self.spawnY
             self.rect.x = self.x

@@ -46,7 +46,7 @@ testbox = TextBox("Fps: ", (255, 255, 255), 'default', 50, 20, 20)
 
 edit_button = Button(20, 100, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Edit Level", 'default')
 play_button = Button(20, 180, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Play Level", 'default')
-camera = Camera()
+
 
 
 
