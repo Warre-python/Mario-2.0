@@ -1,6 +1,6 @@
 import pygame
 import json
-from camera import Camera
+
 from mario import Mario
 from world import World
 from textBox import TextBox
