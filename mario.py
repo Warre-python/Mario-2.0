@@ -48,7 +48,7 @@ class Mario(pygame.sprite.Sprite):
     
 
     def moveX(self, dt, blocks, window):
-        print("hallo")
+        
         if self.rect.x < window.get_width() * 0.2 or self.rect.x > window.get_width() * 0.8:
     
             for block in blocks:
