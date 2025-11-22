@@ -1,27 +1,30 @@
 import pygame
 
-class Block(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height, tile, debug):
-        super().__init__()
+class BlockButton:
+    def __init__(self, x, y, width, height, tile):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-
+        self.tile = tile
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-        self.tile = tile
-
-        self.debug = debug
+        self.is_pressed = False
     
-    def move(self, dx, dy):
-        self.rect.x += dx
-        self.rect.y += dy
-        self.x, self.y = self.rect.topleft
-
+    def isPressed(self):
+        pos = pygame.mouse.get_pos()
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)  # <-- update every frame
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                self.is_pressed = True
+                return True
+        self.is_pressed = False
+        return False
+    
+    
     def draw(self, window, block_data, block_tileset, pixel_size):
-        if self.debug:
-            pygame.draw.rect(window, (0, 255, 0), self.rect, 5)
+        
+        
 
         self.rect.topleft = (self.rect.x, self.rect.y)
         

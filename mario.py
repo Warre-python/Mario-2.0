@@ -2,7 +2,7 @@ import pygame
 from animation import Animation
 
 class Mario(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width, height, debug):
         super().__init__()
         self.x = x
         self.y = y
@@ -13,7 +13,7 @@ class Mario(pygame.sprite.Sprite):
 
         self.velX = 0
         self.velY = 0
-        self.speed = 300
+        self.speed = 200
         self.jump_power = 1000
         self.gravity = 2000
 
@@ -25,6 +25,10 @@ class Mario(pygame.sprite.Sprite):
         self.animation = Animation(["run1", "run2", "run3", "run4"], 0.1)
         self.animation_state = "idle"
         self.direction = True
+
+        self.debug = debug
+
+        self.offsetX = 0
 
 
     def handle_input(self, keys):
@@ -52,6 +56,10 @@ class Mario(pygame.sprite.Sprite):
             if self.on_ground:
                 self.jump = False
             self.animation_state = "jump"
+            if not keys[pygame.K_UP] and self.velY < 0:
+                
+                self.velY = 0
+                self.jump = False
 
     def moveX(self, dt, blocks, window):
         
@@ -60,6 +68,7 @@ class Mario(pygame.sprite.Sprite):
             for block in blocks:
                 block.x += -self.velX * dt
                 block.rect.x = block.x
+            self.offsetX += -self.velX * dt
         else:
             self.rect.x += self.velX * dt
         # camera deadzone thresholds
@@ -74,6 +83,7 @@ class Mario(pygame.sprite.Sprite):
                 for block in blocks:
                     block.x += -self.velX * dt
                     block.rect.x = round(block.x)
+                self.offsetX += -self.velX * dt
                 return
             elif self.rect.x > max_x and self.velX > 0:
                 # Mario tries to move right past max_x -> keep Mario at max_x and shift world left
@@ -81,6 +91,7 @@ class Mario(pygame.sprite.Sprite):
                 for block in blocks:
                     block.x += -self.velX * dt
                     block.rect.x = round(block.x)
+                self.offsetX += -self.velX * dt
                 return
 
         # Default: move Mario normally (inside deadzone or not moving)
@@ -114,25 +125,38 @@ class Mario(pygame.sprite.Sprite):
                     elif self.velX < 0:  # moving left
                         self.rect.left = block.rect.right
 
-        # Vertical movement
+        # Vertical movement (use previous rect to detect direction and avoid tunneling)
+        prev_rect = self.rect.copy()
         self.moveY(dt, blocks)
-        
+
         self.x, self.y = self.rect.topleft
         self.on_ground = False
         collision = pygame.sprite.spritecollide(self, blocks, False)
         if collision:
             for block in collision:
-                if self.rect.colliderect(block.rect):
-                    if self.velY > 0:  # falling
-                        self.rect.bottom = block.rect.top
-                        self.velY = 0
+                if not self.rect.colliderect(block.rect):
+                    continue
+                # landed on top
+                if prev_rect.bottom <= block.rect.top and self.rect.bottom > block.rect.top:
+                    self.rect.bottom = block.rect.top
+                    self.velY = 0
                     self.on_ground = True
-                elif self.velY < 0:  # hitting ceiling
+                # hit head on underside
+                elif prev_rect.top >= block.rect.bottom and self.rect.top < block.rect.bottom:
                     self.rect.top = block.rect.bottom
                     self.velY = 0
+                else:
+                    # fallback: resolve based on velocity
+                    if self.velY > 0:
+                        self.rect.bottom = block.rect.top
+                        self.velY = 0
+                        self.on_ground = True
+                    elif self.velY < 0:
+                        self.rect.top = block.rect.bottom
+                        self.velY = 0
         
         if self.y > window.get_height():
-            print("Respawn")
+            
             self.x = self.spawnX
             self.y = self.spawnY
             self.rect.x = self.x
@@ -143,7 +167,8 @@ class Mario(pygame.sprite.Sprite):
         self.x, self.y = self.rect.topleft
 
     def draw(self, dt, window, mario_data, mario_tileset, pixel_size):
-        #pygame.draw.rect(window, (255, 0, 0), self.rect)
+        if self.debug:
+            pygame.draw.rect(window, (255, 0, 0), self.rect, 5)
         
 
         if self.animation_state == "run":
