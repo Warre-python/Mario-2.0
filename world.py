@@ -1,8 +1,8 @@
 import json
 
-from mario import Mario
+from elements.mario import Mario
 import pygame
-from block import Block
+from elements.block import Block
 
 class World:
     def __init__(self, pathToWorld, pixel_size, blocks_data):
@@ -66,5 +66,5 @@ class World:
         world_data["mario_spawn"] = mario_spawn_info
 
         # Write to JSON file
-        with open("level4.json", 'w') as f:
+        with open("levels/level4.json", 'w') as f:
             json.dump(world_data, f, indent=4)

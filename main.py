@@ -1,18 +1,18 @@
-from block_button import BlockButton
+from gui.block_button import BlockButton
 import pygame
 import json
 
-from mario import Mario
+from elements.mario import Mario
 from world import World
-from textBox import TextBox
-from button import Button
+from gui.textBox import TextBox
+from gui.button import Button
 
 #settings
 fps = 60
 pixel_size = 3
 debug = True
 
-level = 'level4.json'
+level = 'levels/level4.json'
 
 scene = "play_level"
 
@@ -25,14 +25,14 @@ clock = pygame.time.Clock()
 sky = (135, 205, 255)
 
 #load mario.json and blocks.json
-with open('mario.json') as m: 
+with open('assets/mario.json') as m: 
     mario_data = json.load(m)
-with open('blocks.json') as b:
+with open('assets/blocks.json') as b:
     blocks_data = json.load(b)
 
 #load tileset
-mario_tileset = pygame.image.load("assets/mario tiles.png").convert_alpha()
-background_tileset = pygame.image.load("assets/background tiles1.png").convert_alpha()
+mario_tileset = pygame.image.load("assets/images/mario tiles.png").convert_alpha()
+background_tileset = pygame.image.load("assets/images/background tiles1.png").convert_alpha()
 
 
 #create mario

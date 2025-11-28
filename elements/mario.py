@@ -1,5 +1,5 @@
 import pygame
-from animation import Animation
+from util.animation import Animation
 
 class Mario(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, debug):
