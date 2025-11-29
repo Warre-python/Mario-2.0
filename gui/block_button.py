@@ -24,7 +24,6 @@ class BlockButton:
     
     def draw(self, window, block_data, block_tileset, pixel_size):
         
-        
 
         self.rect.topleft = (self.rect.x, self.rect.y)
         

@@ -14,6 +14,12 @@ class Entity(pygame.sprite.Sprite):
     def collision(self, other):
         return pygame.sprite.spritecollide(self, other, False, False)
     
+    def scrollScreen(self, offsetX):
+        # move both the rect and the stored x position so the entity
+        # stays in sync with world shifts performed by Mario.moveX
+        self.rect.x += offsetX
+        self.x += offsetX
+
     def update(self, dt):
         pass
 

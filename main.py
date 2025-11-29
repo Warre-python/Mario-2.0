@@ -12,7 +12,7 @@ fps = 60
 pixel_size = 3
 debug = True
 
-level = 'levels/level4.json'
+level = 'levels/level5.json'
 
 scene = "play_level"
 
@@ -29,19 +29,21 @@ with open('assets/mario.json') as m:
     mario_data = json.load(m)
 with open('assets/blocks.json') as b:
     blocks_data = json.load(b)
+with open('assets/coin.json') as c:
+    coin_data = json.load(c)
 
 #load tileset
 mario_tileset = pygame.image.load("assets/images/mario tiles.png").convert_alpha()
 background_tileset = pygame.image.load("assets/images/background tiles1.png").convert_alpha()
+coin_tileset = pygame.image.load("assets/images/coin.png").convert_alpha()
 
 
-#create mario
 
 
 #create world
-world = World(level, pixel_size, blocks_data)
-world.loadWorldData()
-blocks, mario = world.loadWorld(debug)
+world = World(level, pixel_size, debug)
+
+blocks, mario, entities = world.loadWorld()
 
 #textbox for fps
 testbox = TextBox("Fps: ", (255, 255, 255), 'arial', 50, 20, 20)
@@ -63,7 +65,7 @@ for i in range(len(blocks_data)):
 
 tile = "grass"
 
-def playLevel(window, sky, dt, mario, blocks, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size):
+def playLevel(window, sky, dt, mario, blocks, entities, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size):
     #clear window and fill in blue
     window.fill(sky)
 
@@ -71,12 +73,21 @@ def playLevel(window, sky, dt, mario, blocks, mario_data, mario_tileset, blocks_
     keys = pygame.key.get_pressed()
     mario.update(keys, blocks, dt, window)
     mario.draw(dt, window, mario_data, mario_tileset, pixel_size)
+    
+    #draw coins
+    for entity in entities:
+        entity.update(dt)
+        # apply camera/world offset from Mario so entities scroll with blocks
+        if mario is not None:
+            entity.scrollScreen(mario.offsetX)
+        entity.draw(window, coin_data, coin_tileset, pixel_size)
 
     #draw blocks
     for block in blocks:
         block.draw(window, blocks_data, background_tileset, pixel_size)
 
-
+tile = "grass"
+pressed = False
 
 def editLevel(window, blocks, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario):
     #clear window and fill in blue
@@ -137,11 +148,11 @@ while(run):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-            world.saveWorld(blocks, mario)
+            world.saveWorld(blocks, mario, entities, level)
         
 
     if scene == "play_level":
-        playLevel(window, sky, dt, mario, blocks, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size)
+        playLevel(window, sky, dt, mario, blocks, entities, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size)
     
     elif scene == "edit_level":
         tile = editLevel(window, blocks, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario)
