@@ -9,9 +9,12 @@ class Coin(Entity):
         self.animation = Animation(["0", "1", "2", "3", "4", "5"], 0.1)
         self.current_frame = "0"
     
-    def update(self, dt):
+    def update(self, dt, mario):
         # Animation returns a name string (e.g. "0")
+        
         self.current_frame = self.animation.nextFrame(dt)
+
+            
 
     def draw(self, window, coin_data, coin_tileset, pixel_size):
         frame_key = str(self.current_frame)

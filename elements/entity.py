@@ -18,7 +18,7 @@ class Entity(pygame.sprite.Sprite):
         # move both the rect and the stored x position so the entity
         # stays in sync with world shifts performed by Mario.moveX
         self.rect.x += offsetX
-        self.x += offsetX
+        self.x += round(offsetX)
 
     def update(self, dt):
         pass

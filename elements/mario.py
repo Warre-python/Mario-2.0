@@ -29,6 +29,7 @@ class Mario(pygame.sprite.Sprite):
         self.debug = debug
 
         self.offsetX = 0
+        self.offset_last = 0 
 
 
     def handle_input(self, keys):
@@ -62,13 +63,16 @@ class Mario(pygame.sprite.Sprite):
                 self.jump = False
 
     def moveX(self, dt, blocks, window):
+        # reset per-frame delta
+        self.offset_last = 0
         
         if self.rect.x < window.get_width() * 0.2 or self.rect.x > window.get_width() * 0.8:
-    
+            delta = -self.velX * dt
             for block in blocks:
-                block.x += -self.velX * dt
+                block.x += delta
                 block.rect.x = block.x
-            self.offsetX += -self.velX * dt
+            self.offsetX += delta
+            self.offset_last = delta
         else:
             self.rect.x += self.velX * dt
         # camera deadzone thresholds
@@ -80,18 +84,22 @@ class Mario(pygame.sprite.Sprite):
             if self.rect.x < min_x and self.velX < 0:
                 # Mario tries to move left past min_x -> keep Mario at min_x and shift world right
                 self.rect.x = int(min_x)
+                delta = -self.velX * dt
                 for block in blocks:
-                    block.x += -self.velX * dt
+                    block.x += delta
                     block.rect.x = round(block.x)
-                self.offsetX += -self.velX * dt
+                self.offsetX += delta
+                self.offset_last = delta
                 return
             elif self.rect.x > max_x and self.velX > 0:
                 # Mario tries to move right past max_x -> keep Mario at max_x and shift world left
                 self.rect.x = int(max_x)
+                delta = -self.velX * dt
                 for block in blocks:
-                    block.x += -self.velX * dt
+                    block.x += delta
                     block.rect.x = round(block.x)
-                self.offsetX += -self.velX * dt
+                self.offsetX += delta
+                self.offset_last = delta
                 return
 
         # Default: move Mario normally (inside deadzone or not moving)

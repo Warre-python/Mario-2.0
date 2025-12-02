@@ -45,6 +45,9 @@ world = World(level, pixel_size, debug)
 
 blocks, mario, entities = world.loadWorld()
 
+mario_group = pygame.sprite.Group()
+mario_group.add(mario)
+
 #textbox for fps
 testbox = TextBox("Fps: ", (255, 255, 255), 'arial', 50, 20, 20)
 textbox = TextBox("Avg. Fps: ", (255, 255, 255), 'arial', 50, 200, 20)
@@ -52,6 +55,8 @@ textbox = TextBox("Avg. Fps: ", (255, 255, 255), 'arial', 50, 200, 20)
 
 edit_button = Button(20, 100, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Edit Level", 'arial')
 play_button = Button(20, 180, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Play Level", 'arial')
+
+delete_all_button = Button(20, 340, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Delete All", 'arial')
 
 block_buttons = []
 
@@ -65,7 +70,7 @@ for i in range(len(blocks_data)):
 
 tile = "grass"
 
-def playLevel(window, sky, dt, mario, blocks, entities, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size):
+def playLevel(window, sky, dt, mario, mario_group, blocks, entities, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size):
     #clear window and fill in blue
     window.fill(sky)
 
@@ -76,23 +81,26 @@ def playLevel(window, sky, dt, mario, blocks, entities, mario_data, mario_tilese
     
     #draw coins
     for entity in entities:
-        entity.update(dt)
-        # apply camera/world offset from Mario so entities scroll with blocks
+        entity.update(dt, mario)
         if mario is not None:
-            entity.scrollScreen(mario.offsetX)
+            entity.scrollScreen(mario.offset_last)
         entity.draw(window, coin_data, coin_tileset, pixel_size)
 
     #draw blocks
     for block in blocks:
+        
+        block.update(dt, mario, mario_group)
         block.draw(window, blocks_data, background_tileset, pixel_size)
 
 tile = "grass"
 pressed = False
 
-def editLevel(window, blocks, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario):
+def editLevel(window, delete_all_button, blocks, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario):
     #clear window and fill in blue
     window.fill(sky)
     button_pressed = False
+
+    
     
     for block_button in block_buttons:
         block_button.draw(window, blocks_data, background_tileset, pixel_size)
@@ -132,7 +140,11 @@ def editLevel(window, blocks, blocks_data, background_tileset, pixel_size, press
             if block.rect.collidepoint(mouse_x, mouse_y):
                 blocks.remove(block)
                 break
-    
+    delete_all_button.draw(window)
+    if delete_all_button.isPressed():
+        blocks.empty()
+
+
     return tile
 
 
@@ -152,10 +164,10 @@ while(run):
         
 
     if scene == "play_level":
-        playLevel(window, sky, dt, mario, blocks, entities, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size)
+        playLevel(window, sky, dt, mario, mario_group, blocks, entities, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size)
     
     elif scene == "edit_level":
-        tile = editLevel(window, blocks, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario)
+        tile = editLevel(window, delete_all_button, blocks, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario)
         
     if edit_button.isPressed():
         scene = "edit_level"

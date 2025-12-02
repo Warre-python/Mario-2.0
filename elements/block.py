@@ -19,6 +19,9 @@ class Block(pygame.sprite.Sprite):
         self.rect.y += dy
         self.x, self.y = self.rect.topleft
 
+    def update(self, dt, mario, mario_group):
+        pass
+
     def draw(self, window, block_data, block_tileset, pixel_size):
         if self.debug:
             pygame.draw.rect(window, (0, 255, 0), self.rect, 5)

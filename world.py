@@ -4,6 +4,7 @@ from elements.mario import Mario
 import pygame
 from elements.block import Block
 from elements.coin import Coin
+from elements.blocks.pipe import Pipe
 
 class World:
     def __init__(self, pathToWorld, pixel_size, debug):
@@ -30,11 +31,19 @@ class World:
                 y = int(el["y"])
                 mario = Mario(x, y, 16 * self.pixel_size, 32 * self.pixel_size, self.debug)
             elif t == "block":
-                x = int(el["x"])
-                y = int(el["y"])
-                tile = el["name"]
-                block = self.createBlock(x, y, tile, blocks_data, self.pixel_size, self.debug)
-                blocks.add(block)
+                if el["name"] == "pijp_boven":
+                    x = int(el["x"])
+                    y = int(el["y"])
+                    width = blocks_data["pijp_boven"][2]["w"] * self.pixel_size
+                    height = blocks_data["pijp_boven"][3]["h"] * self.pixel_size
+                    block = Pipe(x, y, width, height)
+                    blocks.add(block)
+                else:
+                    x = int(el["x"])
+                    y = int(el["y"])
+                    tile = el["name"]
+                    block = self.createBlock(x, y, tile, blocks_data, self.pixel_size, self.debug)
+                    blocks.add(block)
             elif t == "entity":
                 if el["name"] == "coin":
                     x = int(el["x"])
