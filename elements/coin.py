@@ -3,13 +3,13 @@ from util.animation import Animation
 import pygame
 
 class Coin(Entity):
-    def __init__(self, x, y, width, height):
-        super().__init__(x, y, width, height)
+    def __init__(self, x, y, width, height, debug):
+        super().__init__(x, y, width, height, debug)
         self.color = (255, 223, 0)  # Gold color for the coin
         self.animation = Animation(["0", "1", "2", "3", "4", "5"], 0.1)
         self.current_frame = "0"
     
-    def update(self, dt, mario):
+    def update(self, dt):
         # Animation returns a name string (e.g. "0")
         
         self.current_frame = self.animation.nextFrame(dt)
@@ -17,6 +17,9 @@ class Coin(Entity):
             
 
     def draw(self, window, coin_data, coin_tileset, pixel_size):
+        if self.debug:
+            pygame.draw.rect(window, (255, 255, 0), self.rect, 5)
+
         frame_key = str(self.current_frame)
         # guard if key missing
         if frame_key not in coin_data:

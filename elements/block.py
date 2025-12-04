@@ -1,26 +1,10 @@
 import pygame
+from elements.element import Element
 
-class Block(pygame.sprite.Sprite):
+class Block(Element):
     def __init__(self, x, y, width, height, tile, debug):
-        super().__init__()
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-
+        super().__init__(x, y, width, height, debug)
         self.tile = tile
-
-        self.debug = debug
-    
-    def move(self, dx, dy):
-        self.rect.x += dx
-        self.rect.y += dy
-        self.x, self.y = self.rect.topleft
-
-    def update(self, dt, mario, mario_group):
-        pass
 
     def draw(self, window, block_data, block_tileset, pixel_size):
         if self.debug:

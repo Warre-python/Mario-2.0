@@ -1,14 +1,10 @@
 import pygame
+from elements.element import Element
 
-class Entity(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height):
-        super().__init__()
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+class Entity(Element):
+    def __init__(self, x, y, width, height, debug):
+        super().__init__(x, y, width, height, debug)
+        
         self.color = (255, 0, 255)
     
     def collision(self, other):

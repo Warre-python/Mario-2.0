@@ -6,6 +6,9 @@ from elements.mario import Mario
 from world import World
 from gui.textBox import TextBox
 from gui.button import Button
+from elements.entity import Entity
+from elements.coin import Coin
+from elements.block import Block
 
 #settings
 fps = 60
@@ -43,7 +46,7 @@ coin_tileset = pygame.image.load("assets/images/coin.png").convert_alpha()
 #create world
 world = World(level, pixel_size, debug)
 
-blocks, mario, entities = world.loadWorld()
+elements, mario = world.loadWorld()
 
 mario_group = pygame.sprite.Group()
 mario_group.add(mario)
@@ -70,32 +73,32 @@ for i in range(len(blocks_data)):
 
 tile = "grass"
 
-def playLevel(window, sky, dt, mario, mario_group, blocks, entities, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size):
+def playLevel(window, sky, dt, mario, mario_group, elements, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size):
     #clear window and fill in blue
     window.fill(sky)
 
     #update and draw mario
     keys = pygame.key.get_pressed()
-    mario.update(keys, blocks, dt, window)
+    mario.update(keys, elements, dt, window)
     mario.draw(dt, window, mario_data, mario_tileset, pixel_size)
     
     #draw coins
-    for entity in entities:
-        entity.update(dt, mario)
-        if mario is not None:
-            entity.scrollScreen(mario.offset_last)
-        entity.draw(window, coin_data, coin_tileset, pixel_size)
+    for coin in elements:
+        if isinstance(coin, Coin):
+            coin.update(dt)
+        
+            coin.draw(window, coin_data, coin_tileset, pixel_size)
 
     #draw blocks
-    for block in blocks:
-        
-        block.update(dt, mario, mario_group)
-        block.draw(window, blocks_data, background_tileset, pixel_size)
+    for block in elements:
+        if isinstance(block, Block):
+            block.update(dt, mario, mario_group)
+            block.draw(window, blocks_data, background_tileset, pixel_size)
 
 tile = "grass"
 pressed = False
 
-def editLevel(window, delete_all_button, blocks, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario):
+def editLevel(window, delete_all_button, elements, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario):
     #clear window and fill in blue
     window.fill(sky)
     button_pressed = False
@@ -108,8 +111,8 @@ def editLevel(window, delete_all_button, blocks, blocks_data, background_tileset
             tile = block_button.tile
             button_pressed = True
 
-    for block in blocks:
-        block.draw(window, blocks_data, background_tileset, pixel_size)
+    for element in elements:
+        element.draw(window, blocks_data, background_tileset, pixel_size)
 
     mouse_buttons = pygame.mouse.get_pressed()
     
@@ -123,7 +126,7 @@ def editLevel(window, delete_all_button, blocks, blocks_data, background_tileset
         grid_y = round(mouse_y / (16 * pixel_size)) * (16 * pixel_size)     
         # Check if block already exists at this position
         block_exists = False
-        for block in blocks:
+        for block in elements:
             if block.rect.x == grid_x and block.rect.y == grid_y:
                 block_exists = True
                 break
@@ -131,18 +134,18 @@ def editLevel(window, delete_all_button, blocks, blocks_data, background_tileset
         # Only add block if position is empty
         if not block_exists and not button_pressed:
             new_block = world.createBlock(grid_x, grid_y, tile, blocks_data, pixel_size, debug)
-            blocks.add(new_block)
+            elements.add(new_block)
     
     # Right click: remove block
     if mouse_buttons[2] and not pressed:
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        for block in blocks:
+        for block in elements:
             if block.rect.collidepoint(mouse_x, mouse_y):
-                blocks.remove(block)
+                elements.remove(block)
                 break
     delete_all_button.draw(window)
     if delete_all_button.isPressed():
-        blocks.empty()
+        elements.empty()
 
 
     return tile
@@ -160,14 +163,14 @@ while(run):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-            world.saveWorld(blocks, mario, entities, level)
+            world.saveWorld(elements, mario, level)
         
 
     if scene == "play_level":
-        playLevel(window, sky, dt, mario, mario_group, blocks, entities, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size)
+        playLevel(window, sky, dt, mario, mario_group, elements, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size)
     
     elif scene == "edit_level":
-        tile = editLevel(window, delete_all_button, blocks, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario)
+        tile = editLevel(window, delete_all_button, elements, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario)
         
     if edit_button.isPressed():
         scene = "edit_level"

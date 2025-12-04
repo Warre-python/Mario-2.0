@@ -62,15 +62,15 @@ class Mario(pygame.sprite.Sprite):
                 self.velY = 0
                 self.jump = False
 
-    def moveX(self, dt, blocks, window):
+    def moveX(self, dt, elements, window):
         # reset per-frame delta
         self.offset_last = 0
         
         if self.rect.x < window.get_width() * 0.2 or self.rect.x > window.get_width() * 0.8:
             delta = -self.velX * dt
-            for block in blocks:
-                block.x += delta
-                block.rect.x = block.x
+            for element in elements:
+                element.x += delta
+                element.rect.x = element.x
             self.offsetX += delta
             self.offset_last = delta
         else:
@@ -85,9 +85,9 @@ class Mario(pygame.sprite.Sprite):
                 # Mario tries to move left past min_x -> keep Mario at min_x and shift world right
                 self.rect.x = int(min_x)
                 delta = -self.velX * dt
-                for block in blocks:
-                    block.x += delta
-                    block.rect.x = round(block.x)
+                for element in elements:
+                    element.x += delta
+                    element.rect.x = round(element.x)
                 self.offsetX += delta
                 self.offset_last = delta
                 return
@@ -95,9 +95,9 @@ class Mario(pygame.sprite.Sprite):
                 # Mario tries to move right past max_x -> keep Mario at max_x and shift world left
                 self.rect.x = int(max_x)
                 delta = -self.velX * dt
-                for block in blocks:
-                    block.x += delta
-                    block.rect.x = round(block.x)
+                for element in elements:
+                    element.x += delta
+                    element.rect.x = round(element.x)
                 self.offsetX += delta
                 self.offset_last = delta
                 return
@@ -107,60 +107,60 @@ class Mario(pygame.sprite.Sprite):
             self.rect.x += self.velX * dt
 
 
-    def moveY(self, dt, blocks):
+    def moveY(self, dt, element):
         
         self.rect.y += self.velY * dt
         
 
-    def update(self, keys, blocks, dt, window):
+    def update(self, keys, elements, dt, window):
         self.handle_input(keys)
 
         # Apply gravity
         self.velY += self.gravity * dt
 
         # Horizontal movement
-        self.moveX(dt, blocks, window)
+        self.moveX(dt, elements, window)
         
         
         self.x, self.y = self.rect.topleft
 
-        collision = pygame.sprite.spritecollide(self, blocks, False)
+        collision = pygame.sprite.spritecollide(self, elements, False)
         if collision:
-            for block in collision:
-                if self.rect.colliderect(block.rect):
+            for element in collision:
+                if self.rect.colliderect(element.rect):
                     if self.velX > 0:  # moving right
-                        self.rect.right = block.rect.left
+                        self.rect.right = element.rect.left
                     elif self.velX < 0:  # moving left
-                        self.rect.left = block.rect.right
+                        self.rect.left = element.rect.right
 
         # Vertical movement (use previous rect to detect direction and avoid tunneling)
         prev_rect = self.rect.copy()
-        self.moveY(dt, blocks)
+        self.moveY(dt, elements)
 
         self.x, self.y = self.rect.topleft
         self.on_ground = False
-        collision = pygame.sprite.spritecollide(self, blocks, False)
+        collision = pygame.sprite.spritecollide(self, elements, False)
         if collision:
-            for block in collision:
-                if not self.rect.colliderect(block.rect):
+            for element in collision:
+                if not self.rect.colliderect(element.rect):
                     continue
                 # landed on top
-                if prev_rect.bottom <= block.rect.top and self.rect.bottom > block.rect.top:
-                    self.rect.bottom = block.rect.top
+                if prev_rect.bottom <= element.rect.top and self.rect.bottom > element.rect.top:
+                    self.rect.bottom = element.rect.top
                     self.velY = 0
                     self.on_ground = True
                 # hit head on underside
-                elif prev_rect.top >= block.rect.bottom and self.rect.top < block.rect.bottom:
-                    self.rect.top = block.rect.bottom
+                elif prev_rect.top >= element.rect.bottom and self.rect.top < element.rect.bottom:
+                    self.rect.top = element.rect.bottom
                     self.velY = 0
                 else:
                     # fallback: resolve based on velocity
                     if self.velY > 0:
-                        self.rect.bottom = block.rect.top
+                        self.rect.bottom = element.rect.top
                         self.velY = 0
                         self.on_ground = True
                     elif self.velY < 0:
-                        self.rect.top = block.rect.bottom
+                        self.rect.top = element.rect.bottom
                         self.velY = 0
         
         if self.y > window.get_height():

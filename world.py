@@ -20,9 +20,9 @@ class World:
         with open('assets/blocks.json') as b:
             blocks_data = json.load(b)
         
-        blocks = pygame.sprite.Group()
-        coins = pygame.sprite.Group()
-        mario = None
+        elements = pygame.sprite.Group()
+        
+        
         
         for el in self.world_data["elements"]:
             t = el["type"]
@@ -37,24 +37,24 @@ class World:
                     width = blocks_data["pijp_boven"][2]["w"] * self.pixel_size
                     height = blocks_data["pijp_boven"][3]["h"] * self.pixel_size
                     block = Pipe(x, y, width, height)
-                    blocks.add(block)
+                    elements.add(block)
                 else:
                     x = int(el["x"])
                     y = int(el["y"])
                     tile = el["name"]
                     block = self.createBlock(x, y, tile, blocks_data, self.pixel_size, self.debug)
-                    blocks.add(block)
+                    elements.add(block)
             elif t == "entity":
                 if el["name"] == "coin":
                     x = int(el["x"])
                     y = int(el["y"])
                     
-                    coin = Coin(x, y, 16 * self.pixel_size, 16 * self.pixel_size)
-                    coins.add(coin)
+                    coin = Coin(x, y, 16 * self.pixel_size, 16 * self.pixel_size, self.debug)
+                    elements.add(coin)
 
-        return blocks, mario, coins
+        return elements, mario
 
-    def saveWorld(self, blocks, mario, entities, level):
+    def saveWorld(self, elements, mario, level):
         elements = []
 
         # Mario element first
@@ -66,7 +66,7 @@ class World:
         elements.append(mario_element)
 
         # Block elements
-        for block in blocks:
+        for block in elements:
             block_element = {
                 "type": "block",
                 "name": block.tile,
@@ -75,7 +75,7 @@ class World:
             }
             elements.append(block_element)
         # Coin elements
-        for coin in entities:
+        for coin in elements:
             coin_element = {
                 "type": "entity",
                 "name": "coin",
