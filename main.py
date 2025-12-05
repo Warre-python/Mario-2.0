@@ -77,10 +77,6 @@ def playLevel(window, sky, dt, mario, mario_group, elements, mario_data, mario_t
     #clear window and fill in blue
     window.fill(sky)
 
-    #update and draw mario
-    keys = pygame.key.get_pressed()
-    mario.update(keys, elements, dt, window)
-    mario.draw(dt, window, mario_data, mario_tileset, pixel_size)
     
     #draw coins
     for coin in elements:
@@ -94,6 +90,13 @@ def playLevel(window, sky, dt, mario, mario_group, elements, mario_data, mario_t
         if isinstance(block, Block):
             block.update(dt, mario, mario_group)
             block.draw(window, blocks_data, background_tileset, pixel_size)
+    
+    #update and draw mario
+    keys = pygame.key.get_pressed()
+    mario.update(keys, elements, dt, window)
+    mario.draw(dt, window, mario_data, mario_tileset, pixel_size)
+    
+        
 
 tile = "grass"
 pressed = False
@@ -119,11 +122,14 @@ def editLevel(window, delete_all_button, elements, blocks_data, background_tiles
     # Left click: add block
     if mouse_buttons[0] and not pressed:
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        
-        # Convert screen x to world x using mario.offsetX
-        world_x = mouse_x - int(mario.offsetX)
-        grid_x = round(world_x / (16 * pixel_size)) * (16 * pixel_size)
-        grid_y = round(mouse_y / (16 * pixel_size)) * (16 * pixel_size)     
+
+        # Convert mouse position to world coordinates  
+        world_x = mouse_x - mario.offsetX
+        world_y = mouse_y - 0  # <-- you MUST track Y offset too!
+
+        # Snap to grid in world space
+        grid_x = (round(world_x / (16 * pixel_size)) * (16 * pixel_size))
+        grid_y = (round(world_y / (16 * pixel_size)) * (16 * pixel_size)) 
         # Check if block already exists at this position
         block_exists = False
         for block in elements:
@@ -133,7 +139,7 @@ def editLevel(window, delete_all_button, elements, blocks_data, background_tiles
         
         # Only add block if position is empty
         if not block_exists and not button_pressed:
-            new_block = world.createBlock(grid_x, grid_y, tile, blocks_data, pixel_size, debug)
+            new_block = world.createBlock(grid_x, grid_y, tile, blocks_data, pixel_size, True, debug)
             elements.add(new_block)
     
     # Right click: remove block

@@ -2,19 +2,14 @@ import pygame
 from elements.element import Element
 
 class Entity(Element):
-    def __init__(self, x, y, width, height, debug):
-        super().__init__(x, y, width, height, debug)
+    def __init__(self, x, y, width, height, can_collide, debug):
+        super().__init__(x, y, width, height, can_collide, debug)
         
         self.color = (255, 0, 255)
     
     def collision(self, other):
         return pygame.sprite.spritecollide(self, other, False, False)
     
-    def scrollScreen(self, offsetX):
-        # move both the rect and the stored x position so the entity
-        # stays in sync with world shifts performed by Mario.moveX
-        self.rect.x += offsetX
-        self.x += round(offsetX)
 
     def update(self, dt):
         pass

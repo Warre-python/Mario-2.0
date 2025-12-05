@@ -3,8 +3,8 @@ from util.animation import Animation
 import pygame
 
 class Coin(Entity):
-    def __init__(self, x, y, width, height, debug):
-        super().__init__(x, y, width, height, debug)
+    def __init__(self, x, y, width, height, can_collide, debug):
+        super().__init__(x, y, width, height, can_collide, debug)
         self.color = (255, 223, 0)  # Gold color for the coin
         self.animation = Animation(["0", "1", "2", "3", "4", "5"], 0.1)
         self.current_frame = "0"

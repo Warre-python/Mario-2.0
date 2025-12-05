@@ -36,20 +36,20 @@ class World:
                     y = int(el["y"])
                     width = blocks_data["pijp_boven"][2]["w"] * self.pixel_size
                     height = blocks_data["pijp_boven"][3]["h"] * self.pixel_size
-                    block = Pipe(x, y, width, height)
+                    block = Pipe(x, y, width, height, True, self.debug)
                     elements.add(block)
                 else:
                     x = int(el["x"])
                     y = int(el["y"])
                     tile = el["name"]
-                    block = self.createBlock(x, y, tile, blocks_data, self.pixel_size, self.debug)
+                    block = self.createBlock(x, y, tile, blocks_data, self.pixel_size, True, self.debug)
                     elements.add(block)
             elif t == "entity":
                 if el["name"] == "coin":
                     x = int(el["x"])
                     y = int(el["y"])
                     
-                    coin = Coin(x, y, 16 * self.pixel_size, 16 * self.pixel_size, self.debug)
+                    coin = Coin(x, y, 16 * self.pixel_size, 16 * self.pixel_size, False, self.debug)
                     elements.add(coin)
 
         return elements, mario
@@ -91,8 +91,8 @@ class World:
             json.dump(world_data, l, indent=4)
             
         
-    def createBlock(self, x, y, tile, blocks_data, pixel_size, debug):
+    def createBlock(self, x, y, tile, blocks_data, pixel_size, can_collide, debug):
         width = blocks_data[tile][2]["w"] * pixel_size
         height = blocks_data[tile][3]["h"] * pixel_size
-        return Block(x, y, width, height, tile, debug)
+        return Block(x, y, width, height, tile, can_collide, debug)
         

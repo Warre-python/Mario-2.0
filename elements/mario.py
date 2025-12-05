@@ -127,11 +127,12 @@ class Mario(pygame.sprite.Sprite):
         collision = pygame.sprite.spritecollide(self, elements, False)
         if collision:
             for element in collision:
-                if self.rect.colliderect(element.rect):
-                    if self.velX > 0:  # moving right
-                        self.rect.right = element.rect.left
-                    elif self.velX < 0:  # moving left
-                        self.rect.left = element.rect.right
+                if element.can_collide == True:
+                    if self.rect.colliderect(element.rect):
+                        if self.velX > 0:  # moving right
+                            self.rect.right = element.rect.left
+                        elif self.velX < 0:  # moving left
+                            self.rect.left = element.rect.right
 
         # Vertical movement (use previous rect to detect direction and avoid tunneling)
         prev_rect = self.rect.copy()
@@ -142,26 +143,27 @@ class Mario(pygame.sprite.Sprite):
         collision = pygame.sprite.spritecollide(self, elements, False)
         if collision:
             for element in collision:
-                if not self.rect.colliderect(element.rect):
-                    continue
-                # landed on top
-                if prev_rect.bottom <= element.rect.top and self.rect.bottom > element.rect.top:
-                    self.rect.bottom = element.rect.top
-                    self.velY = 0
-                    self.on_ground = True
-                # hit head on underside
-                elif prev_rect.top >= element.rect.bottom and self.rect.top < element.rect.bottom:
-                    self.rect.top = element.rect.bottom
-                    self.velY = 0
-                else:
-                    # fallback: resolve based on velocity
-                    if self.velY > 0:
+                if element.can_collide == True:
+                    if not self.rect.colliderect(element.rect):
+                        continue
+                    # landed on top
+                    if prev_rect.bottom <= element.rect.top and self.rect.bottom > element.rect.top:
                         self.rect.bottom = element.rect.top
                         self.velY = 0
                         self.on_ground = True
-                    elif self.velY < 0:
+                    # hit head on underside
+                    elif prev_rect.top >= element.rect.bottom and self.rect.top < element.rect.bottom:
                         self.rect.top = element.rect.bottom
                         self.velY = 0
+                    else:
+                        # fallback: resolve based on velocity
+                        if self.velY > 0:
+                            self.rect.bottom = element.rect.top
+                            self.velY = 0
+                            self.on_ground = True
+                        elif self.velY < 0:
+                            self.rect.top = element.rect.bottom
+                            self.velY = 0
         
         if self.y > window.get_height():
             

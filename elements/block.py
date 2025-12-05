@@ -2,8 +2,8 @@ import pygame
 from elements.element import Element
 
 class Block(Element):
-    def __init__(self, x, y, width, height, tile, debug):
-        super().__init__(x, y, width, height, debug)
+    def __init__(self, x, y, width, height, tile, can_collide, debug):
+        super().__init__(x, y, width, height, can_collide, debug)
         self.tile = tile
 
     def draw(self, window, block_data, block_tileset, pixel_size):

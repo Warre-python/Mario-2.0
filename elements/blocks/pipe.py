@@ -2,8 +2,8 @@ from elements.block import Block
 import pygame
 
 class Pipe(Block):
-    def __init__(self, x, y, w, h):
-        super().__init__(x, y, w, h, "pijp_boven", debug=False)
+    def __init__(self, x, y, w, h, can_collide, debug):
+        super().__init__(x, y, w, h, "pijp_boven", can_collide, debug)
         self.tile = "pijp_boven"
 
     def update(self, dt, mario, mario_group):

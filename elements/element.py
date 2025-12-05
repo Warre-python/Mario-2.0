@@ -1,7 +1,7 @@
 import pygame
 
 class Element(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height, debug):
+    def __init__(self, x, y, width, height, can_collide, debug):
         super().__init__()
         self.x = x
         self.y = y
@@ -9,6 +9,8 @@ class Element(pygame.sprite.Sprite):
         self.height = height
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+        self.can_collide = can_collide
 
         self.debug = debug
 
