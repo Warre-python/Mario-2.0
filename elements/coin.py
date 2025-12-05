@@ -9,12 +9,21 @@ class Coin(Entity):
         self.animation = Animation(["0", "1", "2", "3", "4", "5"], 0.1)
         self.current_frame = "0"
     
-    def update(self, dt):
+    def update(self, dt, mario_group, elements):
         # Animation returns a name string (e.g. "0")
         
         self.current_frame = self.animation.nextFrame(dt)
 
-            
+        
+        collision = pygame.sprite.spritecollide(self, mario_group, False, None)
+        if collision:
+            elements.remove(self)
+            return 1
+        return 0
+        
+        
+
+           
 
     def draw(self, window, coin_data, coin_tileset, pixel_size):
         if self.debug:

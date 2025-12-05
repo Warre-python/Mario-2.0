@@ -11,7 +11,7 @@ class Entity(Element):
         return pygame.sprite.spritecollide(self, other, False, False)
     
 
-    def update(self, dt):
+    def update(self, dt, mario_group):
         pass
 
     def draw(self, window):

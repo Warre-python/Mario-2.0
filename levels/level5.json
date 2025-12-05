@@ -452,7 +452,13 @@
         {
             "type": "entity",
             "name": "coin",
-            "x": 753,
+            "x": 500,
+            "y": 350
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 1000,
             "y": 350
         }
     ]

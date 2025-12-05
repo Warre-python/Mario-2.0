@@ -35,29 +35,29 @@ class Mario(pygame.sprite.Sprite):
     def handle_input(self, keys):
         self.velX = 0
         self.animation_state = "idle"
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_q]:
             self.velX = -self.speed
             self.animation_state = "run"
             self.direction = False
-        elif keys[pygame.K_RIGHT]:
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.velX = self.speed
             self.animation_state = "run"
             self.direction = True
 
-        if keys[pygame.K_UP] and self.on_ground:
+        if (keys[pygame.K_UP] or keys[pygame.K_z]) and self.on_ground:
             self.velY = -self.jump_power
             self.on_ground = False
             self.animation_state = "jump"
             self.jump = True
         
-        elif keys[pygame.K_DOWN]:
+        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.animation_state = "crouch"
     
         if self.jump:
             if self.on_ground:
                 self.jump = False
             self.animation_state = "jump"
-            if not keys[pygame.K_UP] and self.velY < 0:
+            if not (keys[pygame.K_UP] or keys[pygame.K_z]) and self.velY < 0:
                 
                 self.velY = 0
                 self.jump = False

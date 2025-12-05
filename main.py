@@ -52,12 +52,12 @@ mario_group = pygame.sprite.Group()
 mario_group.add(mario)
 
 #textbox for fps
-testbox = TextBox("Fps: ", (255, 255, 255), 'arial', 50, 20, 20)
-textbox = TextBox("Avg. Fps: ", (255, 255, 255), 'arial', 50, 200, 20)
+testbox = TextBox("Fps: ", (255, 255, 255), 'arial', 20, 20, 20)
+textbox = TextBox("Avg. Fps: ", (255, 255, 255), 'arial', 20, 100, 20)
 
+coin_text = TextBox("Coins: 0", (255, 255, 255), 'arial', 50, 20, 50)
+coins = 0
 
-edit_button = Button(20, 100, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Edit Level", 'arial')
-play_button = Button(20, 180, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Play Level", 'arial')
 
 delete_all_button = Button(20, 340, 50, 200, 60, (0, 0, 255), (255, 255, 255), "Delete All", 'arial')
 
@@ -75,13 +75,17 @@ tile = "grass"
 
 def playLevel(window, sky, dt, mario, mario_group, elements, mario_data, mario_tileset, blocks_data, background_tileset, pixel_size):
     #clear window and fill in blue
+    global coins, coin_text
     window.fill(sky)
 
     
     #draw coins
     for coin in elements:
         if isinstance(coin, Coin):
-            coin.update(dt)
+            if coin.update(dt, mario_group, elements) == 1:
+                coins += 1
+                
+                coin_text.setText("Coins: " + str(coins), (255, 255, 255))
         
             coin.draw(window, coin_data, coin_tileset, pixel_size)
 
@@ -177,12 +181,13 @@ while(run):
     
     elif scene == "edit_level":
         tile = editLevel(window, delete_all_button, elements, blocks_data, background_tileset, pixel_size, pressed, tile, debug, mario)
-        
-    if edit_button.isPressed():
+    
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_e]:
         scene = "edit_level"
         pressed = True
     
-    elif play_button.isPressed():
+    elif keys[pygame.K_p]:
         scene = "play_level"
         pressed = True
 
@@ -190,8 +195,6 @@ while(run):
         pressed = False
 
    
-    play_button.draw(window)
-    edit_button.draw(window)
 
     #show fps
     dt = clock.tick(fps)/1000
@@ -203,6 +206,7 @@ while(run):
     average_fps = avg_fps / frame_count
     textbox.setText("Avg. Fps: " + str(int(average_fps)), (255, 255, 255))
     textbox.draw(window)
+    coin_text.draw(window)
     pygame.display.flip()
 
 pygame.quit()
