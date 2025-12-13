@@ -23,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.on_ground = False
         self.jump = False
         
-        self.rect = pygame.Rect(x, y, self.pixel, self.pixel*2)
+        self.rect = pygame.Rect(x, y, self.pixel * 0.95, self.pixel*2)
 
         self.image = self.rect
 
