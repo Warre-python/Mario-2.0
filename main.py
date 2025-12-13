@@ -2,8 +2,9 @@ import pygame
 from game import Game
 
 def main():
+    pygame.init()
     debug = True
-    fps = 60
+    fps = 0
     pixel = 64
 
     print("creating window")

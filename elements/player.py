@@ -4,6 +4,10 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, pixel):
         super().__init__()
         self.x, self.y = x, y
+
+        self.spawnX = self.x
+        self.spawnY = self.y
+
         self.pixel = pixel
 
         self.velX = 0
@@ -52,11 +56,40 @@ class Player(pygame.sprite.Sprite):
                 
                 self.velY = 0
                 self.jump = False
-    
-    def update(self, keys, dt):
+
+    def update(self, keys, tiles, camera, dt):
         self.handle_input(keys)
         self.velY += self.gravity * dt
-        self.x += self.velX
-        self.y += self.velY
-        self.rect.topleft = self.x, self.y
+
+        if self.y > 800:
+            camera.x = 0
+            camera.y = 0
+            self.x = self.spawnX
+            self.y = self.spawnY
+            
+        # Horizontal movement and collision
+        self.x += self.velX * dt
+        self.rect.x = int(self.x)
+        collided_tiles_x = pygame.sprite.spritecollide(self, tiles, False)
+        for tile in collided_tiles_x:
+            if self.velX > 0:
+                self.rect.right = tile.rect.left
+            elif self.velX < 0:
+                self.rect.left = tile.rect.right
+            self.x = self.rect.x
+
+        # Vertical movement and collision
+        self.on_ground = False
+        self.y += self.velY * dt
+        self.rect.y = int(self.y)
+        collided_tiles_y = pygame.sprite.spritecollide(self, tiles, False)
+        for tile in collided_tiles_y:
+            if self.velY > 0:
+                self.rect.bottom = tile.rect.top
+                self.on_ground = True
+                self.velY = 0
+            elif self.velY < 0:
+                self.rect.top = tile.rect.bottom
+                self.velY = 0
+            self.y = self.rect.y
         
