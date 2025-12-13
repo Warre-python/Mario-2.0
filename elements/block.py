@@ -1,21 +1,7 @@
 import pygame
-from elements.element import Element
 
-class Block(Element):
-    def __init__(self, x, y, width, height, tile, can_collide, debug):
-        super().__init__(x, y, width, height, can_collide, debug)
-        self.tile = tile
-
-    def draw(self, window, block_data, block_tileset, pixel_size):
-        if self.debug:
-            pygame.draw.rect(window, (0, 255, 0), self.rect, 5)
-
-        self.rect.topleft = (self.rect.x, self.rect.y)
-        
-        self.tile_x = block_data[self.tile][0]["x"]
-        self.tile_y = block_data[self.tile][1]["y"]
-        self.tile_width = block_data[self.tile][2]["w"]
-        self.tile_height = block_data[self.tile][3]["h"]
-        self.sprite = block_tileset.subsurface(self.tile_x, self.tile_y, self.tile_width, self.tile_height)
-        self.sprite = pygame.transform.scale(self.sprite, (self.tile_width * pixel_size, self.tile_height* pixel_size))
-        window.blit(self.sprite, (self.rect.x, self.rect.y))
+class Block(pygame.sprite.Sprite):
+    def __init__(self, x, y, pixel):
+        super().__init__()
+        self.rect = pygame.Rect(x, y, pixel, pixel)
+        self.image = self.rect
