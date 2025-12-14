@@ -1,4 +1,5 @@
 import pygame
+from util.animation import Animation
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, pixel, debug):
@@ -18,6 +19,9 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 2000
 
         self.animation_state = "idle"
+
+        self.animation = Animation()
+
         self.direction = False
 
         self.on_ground = False
