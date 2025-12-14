@@ -1,10 +1,12 @@
 import pygame
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, x, y, pixel):
+    def __init__(self, x, y, pixel, debug):
         super().__init__()
         self.rect = pygame.Rect(x, y, pixel, pixel)
         self.image = self.rect
+
+        self.debug = debug
     def update():
         pass
     def draw(self, camera, dt, window):

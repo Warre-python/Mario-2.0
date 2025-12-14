@@ -19,18 +19,18 @@ class World:
         # Level layout
         # Ground
         for i in range(10):
-            self.tiles.add(Block(i * pixel, pixel * 10, pixel))
+            self.tiles.add(Block(i * pixel, pixel * 10, "grass", pixel, debug))
         
         # Some platforms
-        self.tiles.add(Block(pixel * 3, pixel * 8, pixel))
-        self.tiles.add(Block(pixel * 4, pixel * 8, pixel))
-        self.tiles.add(Block(pixel * 6, pixel * 6, pixel))
-        self.tiles.add(Block(pixel * 7, pixel * 6, pixel))
-        self.tiles.add(Block(pixel * 8, pixel * 6, pixel))
-        self.tiles.add(Block(pixel * 11, pixel * 4, pixel))
-        self.tiles.add(Block(pixel * 12, pixel * 4, pixel))
+        self.tiles.add(Block(pixel * 3, pixel * 8, "luckyblock",  pixel, debug))
+        self.tiles.add(Block(pixel * 4, pixel * 8, "luckyblock", pixel, debug))
+        self.tiles.add(Block(pixel * 6, pixel * 6, "luckyblock", pixel, debug))
+        self.tiles.add(Block(pixel * 7, pixel * 6, "luckyblock", pixel, debug))
+        self.tiles.add(Block(pixel * 8, pixel * 6, "luckyblock", pixel, debug))
+        self.tiles.add(Block(pixel * 11, pixel * 4, "luckyblock", pixel, debug))
+        self.tiles.add(Block(pixel * 12, pixel * 4, "luckyblock", pixel, debug))
 
-        self.entities.add(Entity(pixel * 2, pixel * 7, pixel))
+        self.entities.add(Entity(pixel * 2, pixel * 7, pixel, debug))
 
     def update(self, keys, mouse_buttons, mouse_pos, camera, dt):
         self.player.update(keys, self.tiles, camera, dt)
@@ -41,7 +41,7 @@ class World:
             # Convert screen coordinates to world coordinates and snap to grid
             grid_x = (mouse_pos[0] + camera.x) // self.pixel * self.pixel
             grid_y = (mouse_pos[1] + camera.y) // self.pixel * self.pixel
-            self.tiles.add(Block(grid_x, grid_y, self.pixel))
+            self.tiles.add(Block(grid_x, grid_y, "grass", self.pixel, self.debug))
         
         if not mouse_buttons[0]:
             self.left_pressed = False
