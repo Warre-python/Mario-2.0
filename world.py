@@ -14,10 +14,6 @@ class World:
 
         self.player = Player(64, 128, pixel, self.debug)
         self.player_group.add(self.player)
-        
-
-        self.left_pressed = False
-        self.right_pressed = False
 
         # Level layout
         # Ground
@@ -35,33 +31,46 @@ class World:
 
         self.entities.add(Coin(pixel * 2, pixel * 7, pixel, debug))
 
-    def update(self, keys, mouse_buttons, mouse_pos, camera, dt):
+    def handle_element_placement(self, mouse_pos, camera, selected_element):
+        if mouse_pos[1] > 60:
+            # Convert screen coordinates to world coordinates and snap to grid
+            grid_x = (mouse_pos[0] + camera.x) // self.pixel * self.pixel
+            grid_y = (mouse_pos[1] + camera.y) // self.pixel * self.pixel
+            
+            # Check for existing blocks at this position and remove them
+            for block in self.tiles:
+                if block.rect.collidepoint(grid_x, grid_y):
+                    block.kill()
+                    break
+            
+            # Check for existing entities at this position and remove them
+            for entity in self.entities:
+                if entity.rect.collidepoint(grid_x, grid_y):
+                    entity.kill()
+                    break
+            
+            if selected_element == "coin":
+                self.entities.add(Coin(grid_x, grid_y, self.pixel, self.debug))
+            else:
+                self.tiles.add(Block(grid_x, grid_y, selected_element, self.pixel, self.debug))
+
+    def update(self, keys, mouse_pos, camera, dt):
         self.player.update(keys, self.tiles, camera, dt)
         for entity in self.entities:
             entity.update(dt, self.player_group, self.entities)
 
-        # Add block with left click
-        if mouse_buttons[0] and not self.left_pressed:
-            self.left_pressed = True
-            # Convert screen coordinates to world coordinates and snap to grid
-            grid_x = (mouse_pos[0] + camera.x) // self.pixel * self.pixel
-            grid_y = (mouse_pos[1] + camera.y) // self.pixel * self.pixel
-            self.tiles.add(Block(grid_x, grid_y, "grass", self.pixel, self.debug))
-        
-        if not mouse_buttons[0]:
-            self.left_pressed = False
-        
-        # Remove block with right click
-        if mouse_buttons[2] and not self.right_pressed:
-            self.right_pressed = True
+        # Remove element with right click
+        mouse_buttons = pygame.mouse.get_pressed()
+        if mouse_buttons[2]:
             grid_x = (mouse_pos[0] + camera.x) // self.pixel * self.pixel
             grid_y = (mouse_pos[1] + camera.y) // self.pixel * self.pixel
             for block in self.tiles:
                 if block.rect.collidepoint(grid_x, grid_y):
                     block.kill()
                     break
-        
-        if not mouse_buttons[2]:
-            self.right_pressed = False
+            for entity in self.entities:
+                if entity.rect.collidepoint(grid_x, grid_y):
+                    entity.kill()
+                    break
             
     

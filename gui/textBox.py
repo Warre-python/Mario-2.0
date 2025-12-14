@@ -1,7 +1,8 @@
 import pygame
 
-class TextBox:
+class TextBox(pygame.sprite.Sprite):
     def __init__(self, text, color, font, size, x, y):
+        super().__init__()
         self.color = color
         self.x = x
         self.y = y

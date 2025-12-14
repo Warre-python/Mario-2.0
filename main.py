@@ -1,9 +1,11 @@
 import pygame
 from game import Game
 
+debug = False
 def main():
+    global debug
     pygame.init()
-    debug = True
+    
     fps = 0
     pixel = 64
 
@@ -17,8 +19,16 @@ def main():
     print("creating game")
     game = Game(window, clock, pixel, fps, debug)
 
-    print("run game")
     game.run()
+
+    
+
+def changeDebug():
+    global debug
+    if debug == True:
+        debug = False
+    elif debug == False:
+        debug = True
 
 if __name__ == "__main__":
     print("Def: main")
