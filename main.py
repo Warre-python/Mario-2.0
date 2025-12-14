@@ -8,7 +8,7 @@ def main():
     pixel = 64
 
     print("creating window")
-    window = pygame.display.set_mode((1500, 800))
+    window = pygame.display.set_mode((1500, 800), pygame.RESIZABLE)
     pygame.display.set_caption("Mario 2.4")
 
     print("creating clock")

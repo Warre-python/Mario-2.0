@@ -4,7 +4,7 @@ import json
 class Block(pygame.sprite.Sprite):
     def __init__(self, x, y, tile, pixel, debug):
         super().__init__()
-        self.rect = pygame.Rect(x, y, pixel, pixel)
+        
         self.image = self.rect
 
         self.tile = tile
@@ -14,6 +14,13 @@ class Block(pygame.sprite.Sprite):
         with open('assets/blocks.json') as b:
             self.blocks_data = json.load(b)
         self.block_tileset = pygame.image.load("assets/images/background tiles1.png").convert_alpha()
+
+        self.tile_x = self.blocks_data[self.tile][0]["x"]
+        self.tile_y = self.blocks_data[self.tile][1]["y"]
+        self.tile_width = self.blocks_data[self.tile][2]["w"]
+        self.tile_height = self.blocks_data[self.tile][3]["h"]
+
+        self.rect = pygame.Rect(x, y, self.tile_width * self.pixel/16, self.tile_height * self.pixel/16)
 
         self.debug = debug
     
@@ -28,5 +35,5 @@ class Block(pygame.sprite.Sprite):
         self.tile_width = self.blocks_data[self.tile][2]["w"]
         self.tile_height = self.blocks_data[self.tile][3]["h"]
         self.sprite = self.block_tileset.subsurface(self.tile_x, self.tile_y, self.tile_width, self.tile_height)
-        self.sprite = pygame.transform.scale(self.sprite, (self.pixel, self.pixel))
+        self.sprite = pygame.transform.scale(self.sprite, (self.tile_width * self.pixel/16, self.tile_height * self.pixel/16))
         window.blit(self.sprite, camera.apply(self.rect))

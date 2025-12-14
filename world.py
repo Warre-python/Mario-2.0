@@ -2,6 +2,7 @@ import pygame
 from elements.player import Player
 from elements.block import Block
 from elements.entity import Entity
+from elements.entities.coin import Coin
 
 class World:
     def __init__(self, pixel, debug):
@@ -9,8 +10,10 @@ class World:
         self.debug = debug
         self.tiles = pygame.sprite.Group()
         self.entities = pygame.sprite.Group()
+        self.player_group = pygame.sprite.Group()
 
         self.player = Player(64, 128, pixel, self.debug)
+        self.player_group.add(self.player)
         
 
         self.left_pressed = False
@@ -23,17 +26,19 @@ class World:
         
         # Some platforms
         self.tiles.add(Block(pixel * 3, pixel * 8, "luckyblock",  pixel, debug))
-        self.tiles.add(Block(pixel * 4, pixel * 8, "luckyblock", pixel, debug))
+        self.tiles.add(Block(pixel * 4, pixel * 8, "pijp_boven", pixel, debug))
         self.tiles.add(Block(pixel * 6, pixel * 6, "luckyblock", pixel, debug))
         self.tiles.add(Block(pixel * 7, pixel * 6, "luckyblock", pixel, debug))
-        self.tiles.add(Block(pixel * 8, pixel * 6, "luckyblock", pixel, debug))
+        self.tiles.add(Block(pixel * 8, pixel * 6, "brug", pixel, debug))
         self.tiles.add(Block(pixel * 11, pixel * 4, "luckyblock", pixel, debug))
         self.tiles.add(Block(pixel * 12, pixel * 4, "luckyblock", pixel, debug))
 
-        self.entities.add(Entity(pixel * 2, pixel * 7, pixel, debug))
+        self.entities.add(Coin(pixel * 2, pixel * 7, pixel, debug))
 
     def update(self, keys, mouse_buttons, mouse_pos, camera, dt):
         self.player.update(keys, self.tiles, camera, dt)
+        for entity in self.entities:
+            entity.update(dt, self.player_group, self.entities)
 
         # Add block with left click
         if mouse_buttons[0] and not self.left_pressed:
