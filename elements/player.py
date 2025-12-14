@@ -1,4 +1,5 @@
 import pygame
+import json
 from util.animation import Animation
 
 class Player(pygame.sprite.Sprite):
@@ -27,9 +28,14 @@ class Player(pygame.sprite.Sprite):
         self.on_ground = False
         self.jump = False
         
-        self.rect = pygame.Rect(x, y, self.pixel * 0.95, self.pixel*2)
+        self.rect = pygame.Rect(x, y, self.pixel * 1, self.pixel*2)
 
         self.image = self.rect
+                
+        with open('assets/mario.json') as m: 
+            self.mario_data = json.load(m)
+
+        self.mario_tileset = pygame.image.load("assets/images/mario tiles.png").convert_alpha()
 
         self.debug = debug
 
@@ -100,19 +106,20 @@ class Player(pygame.sprite.Sprite):
             self.y = self.rect.y
     
     def draw(self, camera, dt, window):
-        pygame.draw.rect(window, (255, 0, 0), camera.apply(self.rect))
+
         if self.debug:
-            pygame.draw.rect(window, (255, 0, 0), self.rect, 5)
+            pygame.draw.rect(window, (255, 0, 0), camera.apply(self.rect), 5)
         
 
         if self.animation_state == "run":
             self.animation_state = self.animation.nextFrame(dt)
             
             
-        self.tile_x = mario_data[self.animation_state][0]["x"]
-        self.tile_y = mario_data[self.animation_state][1]["y"]
-        self.sprite = mario_tileset.subsurface(self.tile_x, self.tile_y, 16, 32)
+        self.tile_x = self.mario_data[self.animation_state][0]["x"]
+        self.tile_y = self.mario_data[self.animation_state][1]["y"]
+        self.sprite = self.mario_tileset.subsurface(self.tile_x, self.tile_y, 16, 32)
+        self.newRect = (self.rect).move(0, self.pixel/16)
         self.sprite = pygame.transform.flip(self.sprite, self.direction, False)
-        self.sprite = pygame.transform.scale(self.sprite, (16 * self.pixel,32 * self.pixel))
-        window.blit(self.sprite, (self.rect.x, self.rect.y + self.pixel))
+        self.sprite = pygame.transform.scale(self.sprite, (1 * self.pixel,2* self.pixel))
+        window.blit(self.sprite, camera.apply(self.newRect))
         

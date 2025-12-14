@@ -12,3 +12,5 @@ class Renderer:
 
         for entity in world.entities:
             entity.draw(camera, dt, self.window)
+        
+        world.player.draw(camera, dt, self.window)

@@ -1,6 +1,7 @@
 import pygame
 from elements.player import Player
 from elements.block import Block
+from elements.entity import Entity
 
 class World:
     def __init__(self, pixel, debug):
@@ -10,7 +11,7 @@ class World:
         self.entities = pygame.sprite.Group()
 
         self.player = Player(64, 128, pixel, self.debug)
-        self.entities.add(self.player)
+        
 
         self.left_pressed = False
         self.right_pressed = False
@@ -28,6 +29,8 @@ class World:
         self.tiles.add(Block(pixel * 8, pixel * 6, pixel))
         self.tiles.add(Block(pixel * 11, pixel * 4, pixel))
         self.tiles.add(Block(pixel * 12, pixel * 4, pixel))
+
+        self.entities.add(Entity(pixel * 2, pixel * 7, pixel))
 
     def update(self, keys, mouse_buttons, mouse_pos, camera, dt):
         self.player.update(keys, self.tiles, camera, dt)
