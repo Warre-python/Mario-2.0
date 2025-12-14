@@ -3,13 +3,13 @@ from elements.player import Player
 from elements.block import Block
 
 class World:
-    def __init__(self, pixel):
+    def __init__(self, pixel, debug):
         self.pixel = pixel
-
+        self.debug = debug
         self.tiles = pygame.sprite.Group()
         self.entities = pygame.sprite.Group()
 
-        self.player = Player(64, 128, pixel)
+        self.player = Player(64, 128, pixel, self.debug)
         self.entities.add(self.player)
 
         self.left_pressed = False

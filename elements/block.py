@@ -5,3 +5,6 @@ class Block(pygame.sprite.Sprite):
         super().__init__()
         self.rect = pygame.Rect(x, y, pixel, pixel)
         self.image = self.rect
+    
+    def draw(self, camera, window):
+        pygame.draw.rect(window, (150, 75, 0), camera.apply(self.rect))

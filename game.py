@@ -14,7 +14,7 @@ class Game:
         self.clock = clock
 
         self.running = True
-        self.world = World(self.pixel)
+        self.world = World(self.pixel, self.debug)
         self.camera = Camera(0, 0, self.window.width, self.window.height)
         self.renderer = Renderer(self.window)
         

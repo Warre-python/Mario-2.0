@@ -8,7 +8,7 @@ class Renderer:
         self.window.fill((135, 206, 235))  # sky blue
 
         for tile in world.tiles:
-            pygame.draw.rect(self.window, (150, 75, 0), camera.apply(tile.rect))
+            tile.draw(camera, self.window)
 
         for entity in world.entities:
-            pygame.draw.rect(self.window, (255, 0, 0), camera.apply(entity.rect))
+            entity.draw(camera, self.window)

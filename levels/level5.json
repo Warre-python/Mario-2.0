@@ -1,0 +1,465 @@
+{
+    "elements": [
+        {
+            "type": "mario",
+            "x": 753,
+            "y": 336
+        },
+        {
+            "type": "block",
+            "name": "grass_left",
+            "x": 575,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 623,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 671,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 719,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 815,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 863,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "luckyblock",
+            "x": 671,
+            "y": 288
+        },
+        {
+            "type": "block",
+            "name": "grass_right",
+            "x": 911,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "brug",
+            "x": 959,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "brug",
+            "x": 1007,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "brug",
+            "x": 1055,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "grass_left",
+            "x": 1103,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "grass_right",
+            "x": 1247,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "pijp_boven",
+            "x": 1151,
+            "y": 384
+        },
+        {
+            "type": "block",
+            "name": "pijp_midden",
+            "x": 1151,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "pijp_midden",
+            "x": 1151,
+            "y": 480
+        },
+        {
+            "type": "block",
+            "name": "pijp_midden",
+            "x": 1151,
+            "y": 528
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1199,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1151,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1103,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1055,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1007,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 959,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 911,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 767,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 719,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 671,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 623,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 815,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 863,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "earth_left",
+            "x": 575,
+            "y": 480
+        },
+        {
+            "type": "block",
+            "name": "earth_left",
+            "x": 575,
+            "y": 528
+        },
+        {
+            "type": "block",
+            "name": "earth_left",
+            "x": 575,
+            "y": 624
+        },
+        {
+            "type": "block",
+            "name": "earth_left",
+            "x": 575,
+            "y": 576
+        },
+        {
+            "type": "block",
+            "name": "earth_left",
+            "x": 575,
+            "y": 720
+        },
+        {
+            "type": "block",
+            "name": "earth_left",
+            "x": 575,
+            "y": 672
+        },
+        {
+            "type": "block",
+            "name": "earth_right",
+            "x": 623,
+            "y": 480
+        },
+        {
+            "type": "block",
+            "name": "earth_right",
+            "x": 623,
+            "y": 528
+        },
+        {
+            "type": "block",
+            "name": "luckyblock",
+            "x": 623,
+            "y": 576
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1322,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1370,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1418,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1466,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1514,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1562,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1610,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1658,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1706,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1754,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1802,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1850,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1898,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1946,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1994,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "luckyblock",
+            "x": 1706,
+            "y": 624
+        },
+        {
+            "type": "block",
+            "name": "grass_left",
+            "x": 1274,
+            "y": 768
+        },
+        {
+            "type": "block",
+            "name": "grass_left",
+            "x": -209,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "earth",
+            "x": -209,
+            "y": 480
+        },
+        {
+            "type": "block",
+            "name": "earth",
+            "x": -257,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "earth",
+            "x": -257,
+            "y": 384
+        },
+        {
+            "type": "block",
+            "name": "earth",
+            "x": -209,
+            "y": 384
+        },
+        {
+            "type": "block",
+            "name": "earth",
+            "x": -161,
+            "y": 384
+        },
+        {
+            "type": "block",
+            "name": "earth",
+            "x": -737,
+            "y": 192
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": -689,
+            "y": 192
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1375,
+            "y": 624
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1423,
+            "y": 624
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1471,
+            "y": 576
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1375,
+            "y": 480
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1327,
+            "y": 480
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 1327,
+            "y": 432
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 271,
+            "y": 192
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": -175,
+            "y": 192
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 316,
+            "y": 240
+        },
+        {
+            "type": "block",
+            "name": "grass",
+            "x": 268,
+            "y": 192
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 500,
+            "y": 350
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 1000,
+            "y": 350
+        }
+    ]
+}

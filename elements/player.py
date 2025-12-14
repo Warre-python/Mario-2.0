@@ -1,7 +1,7 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y, pixel):
+    def __init__(self, x, y, pixel, debug):
         super().__init__()
         self.x, self.y = x, y
 
@@ -26,6 +26,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect(x, y, self.pixel * 0.95, self.pixel*2)
 
         self.image = self.rect
+
+        self.debug = debug
 
     def handle_input(self, keys):
         self.velX = 0
@@ -92,4 +94,21 @@ class Player(pygame.sprite.Sprite):
                 self.rect.top = tile.rect.bottom
                 self.velY = 0
             self.y = self.rect.y
+    
+    def draw(self, camera, dt, window):
+        pygame.draw.rect(window, (255, 0, 0), camera.apply(self.rect))
+        if self.debug:
+            pygame.draw.rect(window, (255, 0, 0), self.rect, 5)
+        
+
+        if self.animation_state == "run":
+            self.animation_state = self.animation.nextFrame(dt)
+            
+            
+        self.tile_x = mario_data[self.animation_state][0]["x"]
+        self.tile_y = mario_data[self.animation_state][1]["y"]
+        self.sprite = mario_tileset.subsurface(self.tile_x, self.tile_y, 16, 32)
+        self.sprite = pygame.transform.flip(self.sprite, self.direction, False)
+        self.sprite = pygame.transform.scale(self.sprite, (16 * self.pixel,32 * self.pixel))
+        window.blit(self.sprite, (self.rect.x, self.rect.y + self.pixel))
         
