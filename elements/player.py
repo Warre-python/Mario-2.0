@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
 
         self.animation_state = "idle"
 
-        self.animation = Animation()
+        self.animation = Animation(["run1", "run2", "run3", "run4"], 0.1)
 
         self.direction = False
 

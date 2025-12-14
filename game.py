@@ -41,7 +41,7 @@ class Game:
         self.camera.follow(self.world.player)
 
     def render(self, dt):
-        self.renderer.render(self.world, self.camera)
+        self.renderer.render(self.world, dt, self.camera)
         self.fpsText.setText("Fps: " + str(int(1/dt)), (255, 255, 255))
         self.fpsText.draw(self.window)
         pygame.display.flip()
