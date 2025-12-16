@@ -27,6 +27,8 @@ class Menu:
             self.create_new_level_menu()
         elif self.active_menu == 'load_level':
             self.create_load_level_menu()
+        elif self.active_menu == 'delete_level':
+            self.create_delete_level_menu()
         elif self.active_menu == 'settings':
             self.create_settings_menu()
 
@@ -39,8 +41,11 @@ class Menu:
         
         self.buttons.add(Button(width / 2 - 100, height / 2, 200, 50, "New Level", lambda: self.set_menu('new_level')))
         self.buttons.add(Button(width / 2 - 100, height / 2 + 60, 200, 50, "Load Level", lambda: self.set_menu('load_level')))
-        self.buttons.add(Button(width / 2 - 100, height / 2 + 120, 200, 50, "Settings", lambda: self.set_menu('settings')))
-        self.buttons.add(Button(width / 2 - 100, height / 2 + 180, 200, 50, "Quit", self.quit_game))
+        self.buttons.add(Button(width / 2 - 100, height / 2 + 120, 200, 50, "Delete Level", lambda: self.set_menu('delete_level')))
+        self.buttons.add(Button(width / 2 - 100, height / 2 + 180, 200, 50, "Settings", lambda: self.set_menu('settings')))
+        self.buttons.add(Button(width / 2 - 100, height / 2 + 240, 200, 50, "Quit", self.quit_game))
+
+        self.textboxes.add(TextBox("By Warre Decock", (255,255,255), "Arial", 20, 20, height - 40))
 
     def create_new_level_menu(self):
         width, height = self.game.window.get_size()
@@ -69,7 +74,20 @@ class Menu:
             y_offset += 60
             
         self.buttons.add(Button(width / 2 - 100, y_offset + 20, 200, 50, "Back", lambda: self.set_menu('main')))
-
+    def create_delete_level_menu(self):
+        width, height = self.game.window.get_size()
+        title = TextBox("Delete Level", (255,255,255), "Arial", 50, 0, height / 4)
+        title.setPos(width / 2 - title.rect.width / 2, height / 4)
+        self.textboxes.add(title)
+        
+        y_offset = height / 2 - 60
+        levels = [f for f in os.listdir('levels') if f.endswith('.json')]
+        for level in levels:
+            level_name = level.replace('.json', '')
+            self.buttons.add(Button(width / 2 - 100, y_offset, 200, 50, level_name, lambda l=level_name: self.areYouSureDelete(l)))
+            y_offset += 60
+            
+        self.buttons.add(Button(width / 2 - 100, y_offset + 20, 200, 50, "Back", lambda: self.set_menu('main')))
     def create_settings_menu(self):
         width, height = self.game.window.get_size()
         title = TextBox("Settings", (255,255,255), "Arial", 50, 0, height / 4)
@@ -122,7 +140,25 @@ class Menu:
         self.game.level_name = level_name
         self.game.load_level()
         self.game.scene = 'game'
+
+    def areYouSureDelete(self, level_name):
+        width, height = self.game.window.get_size()
+        self.buttons.empty()
+        self.textboxes.empty()
         
+        title = TextBox(f"Are you sure you want to delete '{level_name}'?", (255,255,255), "Arial", 30, 0, height / 3)
+        title.setPos(width / 2 - title.rect.width / 2, height / 3)
+        self.textboxes.add(title)
+        
+        self.buttons.add(Button(width / 2 - 110, height / 2, 100, 50, "Yes", lambda: self.delete_level(level_name)))
+        self.buttons.add(Button(width / 2 + 10, height / 2, 100, 50, "No", lambda: self.set_menu('delete_level')))
+        
+    def delete_level(self, level_name):
+        path = f'levels/{level_name}.json'
+        if os.path.exists(path):
+            os.remove(path)
+        self.create_menus()
+
     def toggle_debug(self):
         self.game.debug = not self.game.debug
         self.create_menus()

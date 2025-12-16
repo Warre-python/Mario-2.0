@@ -154,6 +154,7 @@ class Game:
             if self.world:
                 self.world.saveWorld(self.camera)
             self.scene = "menu"
+
             
     def update(self, dt):
         if not self.world:
