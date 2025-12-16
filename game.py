@@ -55,6 +55,8 @@ class Game:
         self.gui.add(self.coinsVar)
 
         self.money = 0
+
+        self.death_y = 700
         
         self.menu = Menu(self)
         self.update_gui()
@@ -103,9 +105,9 @@ class Game:
             }
             with open(self.pathToWorld, 'w') as f:
                 json.dump(new_level_data, f, indent=4)
-
+        
         self.world = World(self.pathToWorld, self.pixel_size, self.debug)
-        self.camera = self.world.loadWorld(self.window)
+        self.camera = self.world.loadWorld(self.window, self.death_y)
         self.scene = "game"
         
 

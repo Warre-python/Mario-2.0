@@ -95,8 +95,16 @@ class Menu:
         self.textboxes.add(fps_text)
         self.buttons.add(Button(width / 2 - 75, height / 2 + 100, 50, 50, "-", lambda: self.change_fps(-10)))
         self.buttons.add(Button(width / 2 + 25, height / 2 + 100, 50, 50, "+", lambda: self.change_fps(10)))
-        
-        self.buttons.add(Button(width / 2 - 100, height / 2 + 180, 200, 50, "Back", lambda: self.set_menu('main')))
+
+        # death line
+        death_line_text = TextBox(f"Death Line: {self.game.death_y}", (255,255,255), "Arial", 30, 0, height / 2 + 160)
+        death_line_text.setPos(width / 2 - death_line_text.rect.width / 2, height / 2 + 160)
+        self.textboxes.add(death_line_text)
+        self.buttons.add(Button(width / 2 - 75, height / 2 + 190, 50, 50, "-", lambda: self.change_death_line(-10)))
+        self.buttons.add(Button(width / 2 + 25, height / 2 + 190, 50, 50, "+", lambda: self.change_death_line(10)))
+
+        # Back Button
+        self.buttons.add(Button(width / 2 - 100, height / 2 + 270, 200, 50, "Back", lambda: self.set_menu('main')))
 
     def set_menu(self, menu_name):
         self.active_menu = menu_name
@@ -132,6 +140,10 @@ class Menu:
             self.game.fps = 10
         if self.game.fps == 0:
             self.game.fps = 100
+        self.create_menus()
+
+    def change_death_line(self, amount):
+        self.game.death_y += amount
         self.create_menus()
 
     def quit_game(self):

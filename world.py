@@ -35,7 +35,7 @@ class World:
             else:
                 self.tiles.add(Block(grid_x, grid_y, selected_element, self.pixel, self.blocks_data, self.block_tileset, self.debug))
 
-    def loadWorld(self, window):
+    def loadWorld(self, window, death_y):
         with open(self.pathToWorld) as w:
             self.world_data = json.load(w)
 
@@ -80,7 +80,7 @@ class World:
         self.entities = pygame.sprite.Group()
         self.player_group = pygame.sprite.Group()
         
-        self.death_y = 900
+        self.death_y = death_y
         
         for el in self.world_data["elements"]:
             t = el["type"]
