@@ -1,9 +1,8 @@
 import pygame
-import json
 from util.animation import Animation
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y, pixel, debug):
+    def __init__(self, x, y, pixel, mario_data, mario_tileset, debug):
         super().__init__()
         self.x, self.y = x, y
 
@@ -32,10 +31,10 @@ class Player(pygame.sprite.Sprite):
 
         self.image = self.rect
                 
-        with open('assets/mario.json') as m: 
-            self.mario_data = json.load(m)
 
-        self.mario_tileset = pygame.image.load("assets/images/mario tiles.png").convert_alpha()
+        self.mario_data = mario_data
+
+        self.mario_tileset = mario_tileset
 
         self.debug = debug
 
@@ -69,11 +68,12 @@ class Player(pygame.sprite.Sprite):
                 self.velY = 0
                 self.jump = False
 
-    def update(self, keys, tiles, camera, dt):
+    def update(self, keys, tiles, camera, window, dt, death_y):
         self.handle_input(keys)
         self.velY += self.gravity * dt
 
-        if self.y > 800:
+        if self.y > death_y:
+            #respawn
             camera.x = 0
             camera.y = 0
             self.x = self.spawnX

@@ -1,18 +1,17 @@
 import pygame
-import json
 from elements.entity import Entity
 from util.animation import Animation
 
 class Coin(Entity):
-    def __init__(self, x, y, pixel, debug):
+    def __init__(self, x, y, pixel, coin_data, coin_tileset, debug):
         super().__init__(x, y, pixel, debug)
-        with open('assets/coin.json') as c:
-            self.coin_data = json.load(c)
-        self.coin_tileset = pygame.image.load("assets/images/coin.png").convert_alpha()
+
         self.color = (255, 223, 0)  # Gold color for the coin
         self.animation = Animation(["0", "1", "2", "3", "4", "5"], 0.1)
         self.current_frame = "0"
-    
+
+        self.coin_data = coin_data
+        self.coin_tileset = coin_tileset
     def update(self, dt, player, entities):
         # Animation returns a name string (e.g. "0")
         

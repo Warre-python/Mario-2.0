@@ -1,8 +1,7 @@
 import pygame
-import json
 
 class Block(pygame.sprite.Sprite):
-    def __init__(self, x, y, tile, pixel, debug):
+    def __init__(self, x, y, tile, pixel, blocks_data, block_tileset, debug):
         super().__init__()
         
         self.image = self.rect
@@ -11,9 +10,9 @@ class Block(pygame.sprite.Sprite):
 
         self.pixel = pixel
 
-        with open('assets/blocks.json') as b:
-            self.blocks_data = json.load(b)
-        self.block_tileset = pygame.image.load("assets/images/background tiles1.png").convert_alpha()
+
+        self.blocks_data = blocks_data
+        self.block_tileset = block_tileset
 
         self.tile_x = self.blocks_data[self.tile][0]["x"]
         self.tile_y = self.blocks_data[self.tile][1]["y"]

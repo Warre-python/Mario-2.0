@@ -17,3 +17,5 @@ class Renderer:
             element.draw(self.window)
         
         world.player.draw(camera, dt, self.window)
+
+        pygame.draw.line(self.window, (255, 0, 0), (0, world.death_y - camera.y), (self.window.get_width(), world.death_y - camera.y))

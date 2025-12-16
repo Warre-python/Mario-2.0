@@ -1,7 +1,6 @@
 import pygame
 import json
 from world import World
-from camera import Camera
 from renderer import Renderer
 from gui.textBox import TextBox
 from gui.elementButton import ElementButton
@@ -16,8 +15,9 @@ class Game:
         self.clock = clock
 
         self.running = True
-        self.world = World(self.pixel, self.debug)
-        self.camera = Camera(0, 0, self.window.width, self.window.height)
+        self.world = World("levels\level5.json",self.pixel, self.debug)
+        self.camera = self.world.loadWorld(self.window)
+        
         self.renderer = Renderer(self.window)
         
         self.gui = pygame.sprite.Group()
@@ -36,12 +36,18 @@ class Game:
             self.gui.add(element_button)
 
         element_button = ElementButton(20 + len(self.blocks_data)* 100 + 100, 100, 50, self.pixel, "coin", self.coins_tileset, self.coins_data)
+        
         self.gui.add(element_button)
 
         self.fpsText = TextBox("Fps: ", (255, 255, 255), 'Arial', 20, 10, 10)
         self.gui.add(self.fpsText)
 
         self.selected_element = "grass"
+
+        self.coinsVar = TextBox("Coins: ", (255, 255, 255), 'Arial', 50, 10, 40)
+        self.gui.add(self.coinsVar)
+
+        self.money = 0
         
 
     def run(self):
@@ -51,6 +57,7 @@ class Game:
             self.handle_events()
             self.update(dt)
             self.render(dt)
+        self.world.saveWorld(self.camera)
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -66,14 +73,20 @@ class Game:
                             break
                     if not clicked_on_gui:
                         self.world.handle_element_placement(event.pos, self.camera, self.selected_element)
-
+            
     def update(self, dt):
         keys = pygame.key.get_pressed()
         mouse_pos = pygame.mouse.get_pos()
-        self.world.update(keys, mouse_pos, self.camera, dt)
+        
+        coins_collected = self.world.update(keys, mouse_pos, self.camera, self.window, dt)
+        if coins_collected > 0:
+            self.money += coins_collected
+            self.coinsVar.setText("Coins: " + str(self.money), (255, 255, 255))
+
         self.camera.follow(self.world.player)
 
         self.fpsText.setText("Fps: " + str(int(1/dt)), (255, 255, 255))
+
 
         
             

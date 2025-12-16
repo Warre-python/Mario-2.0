@@ -20,7 +20,6 @@ class ElementButton(pygame.sprite.Sprite):
         return 0
     
     def draw(self, window):
-        pygame.draw.rect(window, (255, 0, 0), self.rect)
         
         self.tile_x = self.data[self.name][0]["x"]
         self.tile_y = self.data[self.name][1]["y"]
