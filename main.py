@@ -6,9 +6,10 @@ def main():
     global debug
     pygame.init()
     
-    fps = 0
+    fps = 100
     pixel = 64
 
+    print("Starting Mario 2.4")
     print("creating window")
     window = pygame.display.set_mode((1500, 800), pygame.RESIZABLE)
     pygame.display.set_caption("Mario 2.4")
@@ -31,6 +32,6 @@ def changeDebug():
         debug = True
 
 if __name__ == "__main__":
-    print("Def: main")
+    print("start main")
     main()
     print("stop game")

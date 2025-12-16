@@ -2,8 +2,8 @@
     "elements": [
         {
             "type": "mario",
-            "x": 829,
-            "y": 704
+            "x": 6451,
+            "y": 128
         },
         {
             "type": "block",
@@ -1110,10 +1110,124 @@
             "y": 192
         },
         {
-            "type": "camera",
+            "type": "entity",
             "name": "coin",
-            "x": 283,
-            "y": 304.99800000000005
+            "x": 2304,
+            "y": 128
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 3520,
+            "y": 0
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 2624,
+            "y": 704
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 2624,
+            "y": 640
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 2624,
+            "y": 576
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 2688,
+            "y": 576
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 2688,
+            "y": 640
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 2688,
+            "y": 704
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 2752,
+            "y": 704
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 2752,
+            "y": 640
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 2752,
+            "y": 576
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 3840,
+            "y": 448
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 3904,
+            "y": 448
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 3904,
+            "y": 512
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 3840,
+            "y": 512
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 3520,
+            "y": 256
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 3584,
+            "y": 256
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 3648,
+            "y": 256
+        },
+        {
+            "type": "entity",
+            "name": "coin",
+            "x": 3712,
+            "y": 256
+        },
+        {
+            "type": "camera",
+            "name": "camera",
+            "x": 5401.1999999999825,
+            "y": -172.87
         }
     ]
 }

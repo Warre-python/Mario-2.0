@@ -10,6 +10,7 @@ class Coin(Entity):
         self.animation = Animation(["0", "1", "2", "3", "4", "5"], 0.1)
         self.current_frame = "0"
 
+        self.visible = True
         self.coin_data = coin_data
         self.coin_tileset = coin_tileset
     def update(self, dt, player, entities):
@@ -19,8 +20,8 @@ class Coin(Entity):
 
         
         collision = pygame.sprite.spritecollide(self, player, False, None)
-        if collision:
-            entities.remove(self)
+        if collision and self.visible:
+            self.visible = False
             return 1
         return 0
 
@@ -32,14 +33,15 @@ class Coin(Entity):
         # guard if key missing
         if frame_key not in self.coin_data:
             return
+        
+        if self.visible:
+            tile_x = int(self.coin_data[frame_key][0]["x"])
+            tile_y = int(self.coin_data[frame_key][1]["y"])
+            tile_width = int(self.coin_data[frame_key][2]["w"])
+            tile_height = int(self.coin_data[frame_key][3]["h"])
+            sprite = self.coin_tileset.subsurface(tile_x, tile_y, tile_width, tile_height)
 
-        tile_x = int(self.coin_data[frame_key][0]["x"])
-        tile_y = int(self.coin_data[frame_key][1]["y"])
-        tile_width = int(self.coin_data[frame_key][2]["w"])
-        tile_height = int(self.coin_data[frame_key][3]["h"])
-        sprite = self.coin_tileset.subsurface(tile_x, tile_y, tile_width, tile_height)
-
-        # scale to the coin's rect size so it matches collision box and is visible
-        target_size = (self.rect.width, self.rect.height)
-        sprite = pygame.transform.scale(sprite, target_size)
-        window.blit(sprite, camera.apply(self.rect))
+            # scale to the coin's rect size so it matches collision box and is visible
+            target_size = (self.rect.width, self.rect.height)
+            sprite = pygame.transform.scale(sprite, target_size)
+            window.blit(sprite, camera.apply(self.rect))

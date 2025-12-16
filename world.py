@@ -38,6 +38,30 @@ class World:
     def loadWorld(self, window):
         with open(self.pathToWorld) as w:
             self.world_data = json.load(w)
+
+        if "elements" not in self.world_data:
+            new_elements = []
+            for key, value in self.world_data.items():
+                try:
+                    x = value[0]["x"]
+                    y = value[1]["y"]
+                    tile = value[2]["tile"]
+                    new_elements.append({
+                        "type": "block",
+                        "name": tile,
+                        "x": x * self.pixel,
+                        "y": y * self.pixel
+                    })
+                except (IndexError, KeyError):
+                    print(f"Warning: Could not parse element '{key}' in old format level '{self.pathToWorld}'. Skipping.")
+
+            new_elements.append({"type": "mario", "x": 100, "y": 100})
+            new_elements.append({"type": "camera", "name": "camera", "x": 0, "y": 0})
+            
+            self.world_data = {"elements": new_elements}
+            
+            with open(self.pathToWorld, 'w') as f:
+                json.dump(self.world_data, f, indent=4)
         
         with open('assets/blocks.json') as b:
             self.blocks_data = json.load(b)
@@ -119,7 +143,7 @@ class World:
             elements.append(coin_element)
         camera_element = {
             "type": "camera",
-            "name": "coin",
+            "name": "camera",
             "x": camera.x,
             "y": camera.y,
 
