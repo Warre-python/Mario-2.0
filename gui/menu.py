@@ -33,7 +33,7 @@ class Menu:
     def create_main_menu(self):
         width, height = self.game.window.get_size()
         
-        title = TextBox("Mario 2.0", (255,255,255), "Arial", 50, 0, height / 4)
+        title = TextBox("Mario 2.4", (255,255,255), "Arial", 50, 0, height / 4)
         title.setPos(width / 2 - title.rect.width / 2, height / 4)
         self.textboxes.add(title)
         
