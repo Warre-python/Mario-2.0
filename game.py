@@ -6,6 +6,7 @@ from renderer import Renderer
 from gui.textBox import TextBox
 from gui.elementButton import ElementButton
 from gui.menu import Menu
+from gui.inGameMenu import inGameMenu
 
 class Game:
     def __init__(self, window, clock, pixel, fps, debug):
@@ -56,10 +57,13 @@ class Game:
 
         self.money = 0
 
-        self.death_y = 700
+        self.death_y = 900
         
         self.menu = Menu(self)
         self.update_gui()
+
+        self.inGameMenu = inGameMenu(self)
+
 
     def update_gui(self):
         self.gui.empty()
@@ -115,6 +119,8 @@ class Game:
         while self.running:
             if self.scene == "menu":
                 self.menu.run()
+            elif self.scene == "in-game-menu":
+                self.inGameMenu.run()
             elif self.scene == "game":
                 if self.world is None:
                     print("Error: No level loaded!")
@@ -150,12 +156,17 @@ class Game:
             
         keys = pygame.key.get_pressed()
         
-        if keys[pygame.K_ESCAPE]:
+        if keys[pygame.K_ESCAPE] and self.world == None:
             if self.world:
                 self.world.saveWorld(self.camera)
             self.scene = "menu"
+            return
+        elif keys[pygame.K_ESCAPE] and self.world:
+            self.scene = "in-game-menu"
+        
+        elif keys[pygame.K_s] and keys[pygame.K_LCTRL] and self.world:
+            self.world.saveWorld(self.camera)
 
-            
     def update(self, dt):
         if not self.world:
             return

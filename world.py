@@ -1,5 +1,6 @@
 import pygame
 import json
+import os
 from elements.player import Player
 from elements.block import Block
 
@@ -11,6 +12,7 @@ class World:
         self.pixel = pixel
         self.debug = debug
         self.pathToWorld = pathToWorld
+        self.level_name = pathToWorld.split('/')[-1].replace('.json', '')
 
     def handle_element_placement(self, mouse_pos, camera, selected_element):
         if mouse_pos[1] > 60:
@@ -39,30 +41,6 @@ class World:
         with open(self.pathToWorld) as w:
             self.world_data = json.load(w)
 
-        if "elements" not in self.world_data:
-            new_elements = []
-            for key, value in self.world_data.items():
-                try:
-                    x = value[0]["x"]
-                    y = value[1]["y"]
-                    tile = value[2]["tile"]
-                    new_elements.append({
-                        "type": "block",
-                        "name": tile,
-                        "x": x * self.pixel,
-                        "y": y * self.pixel
-                    })
-                except (IndexError, KeyError):
-                    print(f"Warning: Could not parse element '{key}' in old format level '{self.pathToWorld}'. Skipping.")
-
-            new_elements.append({"type": "mario", "x": 100, "y": 100})
-            new_elements.append({"type": "camera", "name": "camera", "x": 0, "y": 0})
-            
-            self.world_data = {"elements": new_elements}
-            
-            with open(self.pathToWorld, 'w') as f:
-                json.dump(self.world_data, f, indent=4)
-        
         with open('assets/blocks.json') as b:
             self.blocks_data = json.load(b)
         
@@ -81,6 +59,11 @@ class World:
         self.player_group = pygame.sprite.Group()
         
         self.death_y = death_y
+
+        camera = Camera(0, 0, window.width, window.height)
+
+        self.player = Player(100, 100, self.pixel, self.mario_data, self.mario_tileset, self.debug)
+        self.player_group.add(self.player)
         
         for el in self.world_data["elements"]:
             t = el["type"]
@@ -156,6 +139,35 @@ class World:
         with open(self.pathToWorld, 'w') as l:
             json.dump(world_data, l, indent=4)
 
+    def setCheckpoint(self, camera):
+        print("Setting checkpoint...")
+        checkpoint_data = {
+            "player_x": self.player.rect.x,
+            "player_y": self.player.rect.y,
+            "camera_x": camera.x,
+            "camera_y": camera.y
+        }
+        with open(f"levels/{self.level_name}_checkpoint.json", 'w') as f:
+            json.dump(checkpoint_data, f, indent=4)
+        print("Checkpoint set.")
+
+    def loadCheckpoint(self, camera):
+        checkpoint_path = f"levels/{self.level_name}_checkpoint.json"
+        if not os.path.exists(checkpoint_path):
+            print(f"No checkpoint found for level {self.level_name}")
+            return False
+        
+        with open(checkpoint_path, 'r') as f:
+            checkpoint_data = json.load(f)
+        
+        self.player.rect.x = checkpoint_data["player_x"]
+        self.player.rect.y = checkpoint_data["player_y"]
+        camera.x = checkpoint_data["camera_x"]
+        camera.y = checkpoint_data["camera_y"]
+        
+        print(f"Checkpoint loaded for level {self.level_name}")
+        return True
+
     def update(self, keys, mouse_pos, camera, window, dt):
         self.player.update(keys, self.tiles, camera, window, dt, self.death_y)
         
@@ -178,5 +190,5 @@ class World:
                     break
         
         return coins_collected
-            
+
     
