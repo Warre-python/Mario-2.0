@@ -32,10 +32,23 @@ class World:
                     entity.kill()
                     break
             
+            element_width = 0
+            element_height = 0
+
             if selected_element == "coin":
-                self.entities.add(Coin(grid_x, grid_y, self.pixel, self.coin_data, self.coin_tileset, self.debug))
+                element_width = self.pixel
+                element_height = self.pixel
             else:
-                self.tiles.add(Block(grid_x, grid_y, selected_element, self.pixel, self.blocks_data, self.block_tileset, self.debug))
+                element_width = self.blocks_data[selected_element][2]["w"] * self.pixel / 16
+                element_height = self.blocks_data[selected_element][3]["h"] * self.pixel / 16
+
+            centered_x = grid_x + (self.pixel / 2) - (element_width / 2)
+            centered_y = grid_y + (self.pixel / 2) - (element_height / 2)
+            
+            if selected_element == "coin":
+                self.entities.add(Coin(centered_x, centered_y, self.pixel, self.coin_data, self.coin_tileset, self.debug))
+            else:
+                self.tiles.add(Block(centered_x, centered_y, selected_element, self.pixel, self.blocks_data, self.block_tileset, self.debug))
 
     def loadWorld(self, window, death_y):
         with open(self.pathToWorld) as w:
@@ -68,28 +81,28 @@ class World:
         for el in self.world_data["elements"]:
             t = el["type"]
             if t == "mario":
-                x = int(el["x"])
-                y = int(el["y"])
+                x = int(el["x"]) * self.pixel
+                y = int(el["y"]) * self.pixel
                 self.player = Player(x, y, self.pixel, self.mario_data, self.mario_tileset, self.debug)
                 self.player_group.add(self.player)
             elif t == "block":
 
-                x = int(el["x"])
-                y = int(el["y"])
+                x = int(el["x"]) * self.pixel
+                y = int(el["y"]) * self.pixel
                 tile = el["name"] 
                 block = Block(x, y, tile, self.pixel, self.blocks_data, self.block_tileset, self.debug)
                 self.tiles.add(block)
 
             elif t == "entity":
                 if el["name"] == "coin":
-                    x = int(el["x"])
-                    y = int(el["y"])
+                    x = int(el["x"]) * self.pixel
+                    y = int(el["y"]) * self.pixel
                     
                     coin = Coin(x, y, self.pixel, self.coin_data, self.coin_tileset, self.debug)
                     self.entities.add(coin)
             elif t == "camera":
-                x = int(el["x"])
-                y = int(el["y"])
+                x = int(el["x"]) * self.pixel
+                y = int(el["y"]) * self.pixel
                 camera = Camera(x, y, window.width, window.height)
 
         return camera
@@ -100,8 +113,8 @@ class World:
         # Mario element first
         mario_element = {
             "type": "mario",
-            "x": self.player.rect.x,
-            "y": self.player.rect.y
+            "x": self.player.rect.x / self.pixel,
+            "y": self.player.rect.y / self.pixel    
         }
         elements.append(mario_element)
 
@@ -110,8 +123,8 @@ class World:
             block_element = {
                 "type": "block",
                 "name": block.tile,
-                "x": block.rect.x,
-                "y": block.rect.y,
+                "x": block.rect.x / self.pixel,
+                "y": block.rect.y / self.pixel,
             }
             elements.append(block_element)
         # Coin elements
@@ -120,15 +133,15 @@ class World:
                 coin_element = {
                     "type": "entity",
                     "name": "coin",
-                    "x": coin.rect.x,
-                    "y": coin.rect.y,
+                    "x": coin.rect.x / self.pixel,
+                    "y": coin.rect.y / self.pixel,
                 }
             elements.append(coin_element)
         camera_element = {
             "type": "camera",
             "name": "camera",
-            "x": camera.x,
-            "y": camera.y,
+            "x": camera.x / self.pixel,
+            "y": camera.y / self.pixel,
 
         }
         elements.append(camera_element)
