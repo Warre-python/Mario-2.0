@@ -38,15 +38,6 @@ class Game:
             self.coins_data = json.load(m)
         self.coins_tileset = pygame.image.load("assets/images/coin.png").convert_alpha()
 
-        for i in range(len(self.blocks_data)):
-            tile = list(self.blocks_data.keys())[i]
-            element_button = ElementButton(20 + i * 100, 100, 50, self.pixel_size, tile, self.blocks_tileset, self.blocks_data)
-            self.gui.add(element_button)
-
-        element_button = ElementButton(20 + len(self.blocks_data)* 100 + 100, 100, 50, self.pixel_size, "coin", self.coins_tileset, self.coins_data)
-        
-        self.gui.add(element_button)
-
         self.fpsText = TextBox("Fps: ", (255, 255, 255), 'Arial', 20, 10, 10)
         self.gui.add(self.fpsText)
 
@@ -68,12 +59,25 @@ class Game:
     def update_gui(self):
         self.gui.empty()
         
+        width, _ = self.window.get_size()
+        x_offset = 20
+        y_offset = 100
+        button_width = 100
+        button_height = 50 
+        
         for i in range(len(self.blocks_data)):
+            if x_offset + button_width > width:
+                x_offset = 20
+                y_offset += button_height + 10
             tile = list(self.blocks_data.keys())[i]
-            element_button = ElementButton(20 + i * 100, 100, 50, self.pixel_size, tile, self.blocks_tileset, self.blocks_data)
+            element_button = ElementButton(x_offset, y_offset, 50, self.pixel_size, tile, self.blocks_tileset, self.blocks_data)
             self.gui.add(element_button)
+            x_offset += button_width
 
-        element_button = ElementButton(20 + len(self.blocks_data)* 100 + 100, 100, 50, self.pixel_size, "coin", self.coins_tileset, self.coins_data)
+        if x_offset + button_width > width:
+            x_offset = 20
+            y_offset += button_height + 10
+        element_button = ElementButton(x_offset, y_offset, 50, self.pixel_size, "coin", self.coins_tileset, self.coins_data)
         self.gui.add(element_button)
         
         self.gui.add(self.fpsText)
