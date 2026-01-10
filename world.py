@@ -81,28 +81,28 @@ class World:
         for el in self.world_data["elements"]:
             t = el["type"]
             if t == "mario":
-                x = int(el["x"]) * self.pixel
-                y = int(el["y"]) * self.pixel
+                x = int(el["x"])
+                y = int(el["y"])
                 self.player = Player(x, y, self.pixel, self.mario_data, self.mario_tileset, self.debug)
                 self.player_group.add(self.player)
             elif t == "block":
 
-                x = int(el["x"]) * self.pixel
-                y = int(el["y"]) * self.pixel
+                x = int(el["x"])
+                y = int(el["y"])
                 tile = el["name"] 
                 block = Block(x, y, tile, self.pixel, self.blocks_data, self.block_tileset, self.debug)
                 self.tiles.add(block)
 
             elif t == "entity":
                 if el["name"] == "coin":
-                    x = int(el["x"]) * self.pixel
-                    y = int(el["y"]) * self.pixel
+                    x = int(el["x"])
+                    y = int(el["y"])
                     
                     coin = Coin(x, y, self.pixel, self.coin_data, self.coin_tileset, self.debug)
                     self.entities.add(coin)
             elif t == "camera":
-                x = int(el["x"]) * self.pixel
-                y = int(el["y"]) * self.pixel
+                x = int(el["x"])
+                y = int(el["y"])
                 camera = Camera(x, y, window.width, window.height)
 
         return camera
@@ -113,8 +113,8 @@ class World:
         # Mario element first
         mario_element = {
             "type": "mario",
-            "x": self.player.rect.x / self.pixel,
-            "y": self.player.rect.y / self.pixel    
+            "x": self.player.rect.x,
+            "y": self.player.rect.y    
         }
         elements.append(mario_element)
 
@@ -123,8 +123,8 @@ class World:
             block_element = {
                 "type": "block",
                 "name": block.tile,
-                "x": block.rect.x / self.pixel,
-                "y": block.rect.y / self.pixel,
+                "x": block.rect.x,
+                "y": block.rect.y,
             }
             elements.append(block_element)
         # Coin elements
@@ -133,15 +133,15 @@ class World:
                 coin_element = {
                     "type": "entity",
                     "name": "coin",
-                    "x": coin.rect.x / self.pixel,
-                    "y": coin.rect.y / self.pixel,
+                    "x": coin.rect.x,
+                    "y": coin.rect.y,
                 }
             elements.append(coin_element)
         camera_element = {
             "type": "camera",
             "name": "camera",
-            "x": camera.x / self.pixel,
-            "y": camera.y / self.pixel,
+            "x": camera.x,
+            "y": camera.y,
 
         }
         elements.append(camera_element)
